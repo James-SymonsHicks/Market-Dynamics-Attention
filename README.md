@@ -11,4 +11,4 @@ This repository contains the data and code for the following article:
 
 ### Data
 * `FTSE_PricingData_Full_Clean_Py.dta` is the (cleaned) FTSE 100 pricing data.
-* `Google_Trends-Stock_Symbols_Clean.dta` is the Google SVI (attention) data in- cluding the week indicators and the Noisy dummy variable.
+* `Google_Trends_Stock_Symbols_Clean.dta` is the Google SVI (attention) data in- cluding the week indicators and the Noisy dummy variable.
