@@ -1,0 +1,2075 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/jamessymons-hicks/Library/CloudStorage/OneDrive-LondonSchoolofEconomics/GitHub_Repositories/Market-Dynamics-Attention/LogFiles/ET_All_Models_Output.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 2 Jan 2025, 16:20:58
+{txt}
+{com}. 
+. // -------------------------------------------------------------------------- //
+. //                                      Running Models with All Data                                                      //
+. //                                                                                                                                                        //
+. //      Note:   In this section, we run the overall model as discussed in the     //
+. //                      methodology section of the paper.                                                             //
+. //                      To combine the FE models with the HAC standard errors, we take a  //
+. //                      2-step approach:                                                                                                  //
+. //                              1. Run panel-OLS with stock-level fixed effects.                          //
+. //                              2. Compute residuals.                                                                             //
+. //                              3. Run the Newey-West regressions, including the first-stage  //
+. //                                      residuals as a regressor.
+. // -------------------------------------------------------------------------- //
+. 
+. ** ----------------------------- MODEL 1 -----------------------------
+. xtreg interest_index vol_1w logturnover1w spread1w logmarketcap1w
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}    24,969
+{txt}Group variable: {res}id                              {txt}Number of groups  = {res}        87
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.0277                                         {txt}min = {res}       287
+{txt}     Between = {res}0.0054                                         {txt}avg = {res}     287.0
+{txt}     Overall = {res}0.0023                                         {txt}max = {res}       287
+
+                                                {txt}Wald chi2({res}4{txt})      =  {res}   699.01
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  Std. err.{col 40}      z{col 48}   P>|z|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}vol_1w {c |}{col 16}{res}{space 2} 131.2128{col 28}{space 2} 10.02941{col 39}{space 1}   13.08{col 48}{space 3}0.000{col 56}{space 4} 111.5556{col 69}{space 3} 150.8701
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 5.051896{col 28}{space 2} .3188205{col 39}{space 1}   15.85{col 48}{space 3}0.000{col 56}{space 4} 4.427019{col 69}{space 3} 5.676772
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 1.275921{col 28}{space 2} 1.033579{col 39}{space 1}    1.23{col 48}{space 3}0.217{col 56}{space 4} -.749857{col 69}{space 3} 3.301698
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-3.966388{col 28}{space 2} .4624059{col 39}{space 1}   -8.58{col 48}{space 3}0.000{col 56}{space 4}-4.872687{col 69}{space 3}-3.060089
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 33.60983{col 28}{space 2} 10.01657{col 39}{space 1}    3.36{col 48}{space 3}0.001{col 56}{space 4} 13.97772{col 69}{space 3} 53.24193
+{txt}{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+       sigma_u {c |} {res} 15.149818
+       {txt}sigma_e {c |} {res} 19.373288
+           {txt}rho {c |} {res} .37946647{txt}   (fraction of variance due to u_i)
+{hline 15}{c BT}{hline 64}
+
+{com}. 
+. newey interest_index L(1/2).interest_index L(0/3).vol_1w logturnover1w ///
+>         spread1w logmarketcap1w, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,708
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,     24698){col 67}= {res}   1472.97
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2}  .365054{col 28}{space 2} .0065677{col 39}{space 1}   55.58{col 48}{space 3}0.000{col 56}{space 4}  .352181{col 69}{space 3} .3779271
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .3288793{col 28}{space 2} .0068915{col 39}{space 1}   47.72{col 48}{space 3}0.000{col 56}{space 4} .3153716{col 69}{space 3}  .342387
+{txt}{space 14} {c |}
+{space 8}vol_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 186.7333{col 28}{space 2} 13.44005{col 39}{space 1}   13.89{col 48}{space 3}0.000{col 56}{space 4}   160.39{col 69}{space 3} 213.0766
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 7.388143{col 28}{space 2} 10.88248{col 39}{space 1}    0.68{col 48}{space 3}0.497{col 56}{space 4}-13.94217{col 69}{space 3} 28.71846
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} -67.5204{col 28}{space 2} 12.09431{col 39}{space 1}   -5.58{col 48}{space 3}0.000{col 56}{space 4}-91.22598{col 69}{space 3}-43.81483
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-5.239395{col 28}{space 2} 10.26738{col 39}{space 1}   -0.51{col 48}{space 3}0.610{col 56}{space 4}-25.36408{col 69}{space 3} 14.88529
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} .7448955{col 28}{space 2} .1954638{col 39}{space 1}    3.81{col 48}{space 3}0.000{col 56}{space 4} .3617747{col 69}{space 3} 1.128016
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2}-2.706816{col 28}{space 2} .6706621{col 39}{space 1}   -4.04{col 48}{space 3}0.000{col 56}{space 4}-4.021354{col 69}{space 3}-1.392278
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}  .789318{col 28}{space 2}  .184935{col 39}{space 1}    4.27{col 48}{space 3}0.000{col 56}{space 4} .4268343{col 69}{space 3} 1.151802
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-23.81763{col 28}{space 2} 2.779552{col 39}{space 1}   -8.57{col 48}{space 3}0.000{col 56}{space 4}-29.26571{col 69}{space 3}-18.36954
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. // 2-stage fixed-effects HAC regression:
+. qui xtreg interest_index L(1/2).interest_index L(0/3).vol_1w logturnover1w ///
+>         spread1w logmarketcap1w, fe
+{txt}
+{com}. qui predict resid1, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).vol_1w logturnover1w ///
+>         spread1w logmarketcap1w resid1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,708
+{txt}Maximum lag = {res}5{col 49}{txt}F( 10,     24697){col 67}= {res}   2558.18
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2149559{col 28}{space 2} .0075095{col 39}{space 1}   28.62{col 48}{space 3}0.000{col 56}{space 4} .2002367{col 69}{space 3}  .229675
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1800714{col 28}{space 2} .0077066{col 39}{space 1}   23.37{col 48}{space 3}0.000{col 56}{space 4} .1649661{col 69}{space 3} .1951768
+{txt}{space 14} {c |}
+{space 8}vol_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 130.2388{col 28}{space 2} 12.75929{col 39}{space 1}   10.21{col 48}{space 3}0.000{col 56}{space 4} 105.2299{col 69}{space 3} 155.2478
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 9.199825{col 28}{space 2} 10.39595{col 39}{space 1}    0.88{col 48}{space 3}0.376{col 56}{space 4}-11.17687{col 69}{space 3} 29.57652
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-39.48931{col 28}{space 2} 10.88274{col 39}{space 1}   -3.63{col 48}{space 3}0.000{col 56}{space 4}-60.82014{col 69}{space 3}-18.15848
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-.1815572{col 28}{space 2} 10.22142{col 39}{space 1}   -0.02{col 48}{space 3}0.986{col 56}{space 4}-20.21616{col 69}{space 3} 19.85304
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 3.976225{col 28}{space 2} .2101947{col 39}{space 1}   18.92{col 48}{space 3}0.000{col 56}{space 4}  3.56423{col 69}{space 3} 4.388219
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 1.647552{col 28}{space 2} .6575249{col 39}{space 1}    2.51{col 48}{space 3}0.012{col 56}{space 4} .3587641{col 69}{space 3}  2.93634
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-2.888696{col 28}{space 2} .2037961{col 39}{space 1}  -14.17{col 48}{space 3}0.000{col 56}{space 4}-3.288149{col 69}{space 3}-2.489244
+{txt}{space 8}resid1 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0209023{col 39}{space 1}   47.84{col 48}{space 3}0.000{col 56}{space 4} .9590302{col 69}{space 3}  1.04097
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}  15.4382{col 28}{space 2} 3.235782{col 39}{space 1}    4.77{col 48}{space 3}0.000{col 56}{space 4} 9.095872{col 69}{space 3} 21.78053
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. ** ----------------------------- MODEL 2 -----------------------------
+. xtreg interest_index loghl_1w logturnover1w spread1w logmarketcap1w
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}    24,969
+{txt}Group variable: {res}id                              {txt}Number of groups  = {res}        87
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.0255                                         {txt}min = {res}       287
+{txt}     Between = {res}0.0050                                         {txt}avg = {res}     287.0
+{txt}     Overall = {res}0.0016                                         {txt}max = {res}       287
+
+                                                {txt}Wald chi2({res}4{txt})      =  {res}   641.04
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  Std. err.{col 40}      z{col 48}   P>|z|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}loghl_1w {c |}{col 16}{res}{space 2} 107.2477{col 28}{space 2} 10.02935{col 39}{space 1}   10.69{col 48}{space 3}0.000{col 56}{space 4} 87.59055{col 69}{space 3} 126.9049
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 5.343638{col 28}{space 2} .3186468{col 39}{space 1}   16.77{col 48}{space 3}0.000{col 56}{space 4} 4.719102{col 69}{space 3} 5.968175
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 1.188204{col 28}{space 2} 1.035134{col 39}{space 1}    1.15{col 48}{space 3}0.251{col 56}{space 4}-.8406204{col 69}{space 3} 3.217028
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-4.049408{col 28}{space 2} .4707245{col 39}{space 1}   -8.60{col 48}{space 3}0.000{col 56}{space 4}-4.972011{col 69}{space 3}-3.126805
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 30.34587{col 28}{space 2}  10.1405{col 39}{space 1}    2.99{col 48}{space 3}0.003{col 56}{space 4} 10.47085{col 69}{space 3} 50.22089
+{txt}{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+       sigma_u {c |} {res} 15.182741
+       {txt}sigma_e {c |} {res}  19.39512
+           {txt}rho {c |} {res} .37995851{txt}   (fraction of variance due to u_i)
+{hline 15}{c BT}{hline 64}
+
+{com}. 
+. newey interest_index L(1/2).interest_index L(0/2).loghl_1w logturnover1w ///
+>         spread1w logmarketcap1w, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,795
+{txt}Maximum lag = {res}5{col 49}{txt}F(  8,     24786){col 67}= {res}   1658.13
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .3665547{col 28}{space 2} .0065469{col 39}{space 1}   55.99{col 48}{space 3}0.000{col 56}{space 4} .3537224{col 69}{space 3}  .379387
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .3268705{col 28}{space 2} .0068667{col 39}{space 1}   47.60{col 48}{space 3}0.000{col 56}{space 4} .3134115{col 69}{space 3} .3403296
+{txt}{space 14} {c |}
+{space 6}loghl_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 186.0002{col 28}{space 2} 23.47164{col 39}{space 1}    7.92{col 48}{space 3}0.000{col 56}{space 4} 139.9944{col 69}{space 3}  232.006
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-43.64015{col 28}{space 2} 14.42463{col 39}{space 1}   -3.03{col 48}{space 3}0.002{col 56}{space 4}-71.91328{col 69}{space 3}-15.36701
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-44.52763{col 28}{space 2} 14.93382{col 39}{space 1}   -2.98{col 48}{space 3}0.003{col 56}{space 4}-73.79881{col 69}{space 3}-15.25644
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2}  .900415{col 28}{space 2} .2032052{col 39}{space 1}    4.43{col 48}{space 3}0.000{col 56}{space 4} .5021207{col 69}{space 3} 1.298709
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2}-2.990713{col 28}{space 2} .6764368{col 39}{space 1}   -4.42{col 48}{space 3}0.000{col 56}{space 4} -4.31657{col 69}{space 3}-1.664857
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2} .7394777{col 28}{space 2} .1917066{col 39}{space 1}    3.86{col 48}{space 3}0.000{col 56}{space 4} .3637213{col 69}{space 3} 1.115234
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-25.41937{col 28}{space 2} 2.852833{col 39}{space 1}   -8.91{col 48}{space 3}0.000{col 56}{space 4}-31.01109{col 69}{space 3}-19.82765
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. // 2-stage fixed-effects HAC regression:
+. qui xtreg interest_index L(1/2).interest_index L(0/2).loghl_1w logturnover1w ///
+>         spread1w logmarketcap1w, fe
+{txt}
+{com}. qui predict resid2, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/2).loghl_1w logturnover1w ///
+>         spread1w logmarketcap1w resid2, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,795
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,     24785){col 67}= {res}   2848.52
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2158905{col 28}{space 2} .0074785{col 39}{space 1}   28.87{col 48}{space 3}0.000{col 56}{space 4} .2012321{col 69}{space 3} .2305489
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1778832{col 28}{space 2} .0076725{col 39}{space 1}   23.18{col 48}{space 3}0.000{col 56}{space 4} .1628447{col 69}{space 3} .1929218
+{txt}{space 14} {c |}
+{space 6}loghl_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 115.6583{col 28}{space 2} 19.61548{col 39}{space 1}    5.90{col 48}{space 3}0.000{col 56}{space 4} 77.21075{col 69}{space 3} 154.1058
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-28.72374{col 28}{space 2} 13.11697{col 39}{space 1}   -2.19{col 48}{space 3}0.029{col 56}{space 4}-54.43378{col 69}{space 3}-3.013697
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-16.33308{col 28}{space 2} 12.86419{col 39}{space 1}   -1.27{col 48}{space 3}0.204{col 56}{space 4}-41.54767{col 69}{space 3} 8.881507
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 4.316463{col 28}{space 2} .2203456{col 39}{space 1}   19.59{col 48}{space 3}0.000{col 56}{space 4} 3.884572{col 69}{space 3} 4.748353
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 1.594519{col 28}{space 2} .6582667{col 39}{space 1}    2.42{col 48}{space 3}0.015{col 56}{space 4} .3042771{col 69}{space 3} 2.884761
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-3.146018{col 28}{space 2} .2113576{col 39}{space 1}  -14.88{col 48}{space 3}0.000{col 56}{space 4}-3.560291{col 69}{space 3}-2.731744
+{txt}{space 8}resid2 {c |}{col 16}{res}{space 2}        1{col 28}{space 2}   .02076{col 39}{space 1}   48.17{col 48}{space 3}0.000{col 56}{space 4} .9593091{col 69}{space 3} 1.040691
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 15.74483{col 28}{space 2} 3.288149{col 39}{space 1}    4.79{col 48}{space 3}0.000{col 56}{space 4} 9.299857{col 69}{space 3} 22.18979
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. ** ----------------------------- MODEL 3 -----------------------------
+. xtreg interest_index relspread1w logturnover1w logmarketcap1w 
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}    24,969
+{txt}Group variable: {res}id                              {txt}Number of groups  = {res}        87
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.0214                                         {txt}min = {res}       287
+{txt}     Between = {res}0.0186                                         {txt}avg = {res}     287.0
+{txt}     Overall = {res}0.0003                                         {txt}max = {res}       287
+
+                                                {txt}Wald chi2({res}3{txt})      =  {res}   527.85
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  Std. err.{col 40}      z{col 48}   P>|z|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 3}relspread1w {c |}{col 16}{res}{space 2}-569.3428{col 28}{space 2} 258.9486{col 39}{space 1}   -2.20{col 48}{space 3}0.028{col 56}{space 4}-1076.873{col 69}{space 3}-61.81291
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 6.596912{col 28}{space 2}  .298289{col 39}{space 1}   22.12{col 48}{space 3}0.000{col 56}{space 4} 6.012276{col 69}{space 3} 7.181547
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-5.979602{col 28}{space 2}  .450362{col 39}{space 1}  -13.28{col 48}{space 3}0.000{col 56}{space 4}-6.862295{col 69}{space 3}-5.096909
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 56.54953{col 28}{space 2} 10.15262{col 39}{space 1}    5.57{col 48}{space 3}0.000{col 56}{space 4} 36.65076{col 69}{space 3}  76.4483
+{txt}{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+       sigma_u {c |} {res} 15.635678
+       {txt}sigma_e {c |} {res} 19.435809
+           {txt}rho {c |} {res} .39290351{txt}   (fraction of variance due to u_i)
+{hline 15}{c BT}{hline 64}
+
+{com}. 
+. newey interest_index L(1/2).interest_index L(0/3).relspread1w logturnover1w ///
+>         logmarketcap1w, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,708
+{txt}Maximum lag = {res}5{col 49}{txt}F(  8,     24699){col 67}= {res}   1553.42
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2}  .370756{col 28}{space 2}  .006508{col 39}{space 1}   56.97{col 48}{space 3}0.000{col 56}{space 4}     .358{col 69}{space 3} .3835121
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .3297967{col 28}{space 2} .0067901{col 39}{space 1}   48.57{col 48}{space 3}0.000{col 56}{space 4} .3164878{col 69}{space 3} .3431057
+{txt}{space 14} {c |}
+{space 3}relspread1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 170.5256{col 28}{space 2} 207.4634{col 39}{space 1}    0.82{col 48}{space 3}0.411{col 56}{space 4}-236.1151{col 69}{space 3} 577.1664
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}  139.029{col 28}{space 2} 201.3943{col 39}{space 1}    0.69{col 48}{space 3}0.490{col 56}{space 4}-255.7159{col 69}{space 3}  533.774
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  189.388{col 28}{space 2} 212.6291{col 39}{space 1}    0.89{col 48}{space 3}0.373{col 56}{space 4}-227.3778{col 69}{space 3} 606.1538
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 529.0155{col 28}{space 2} 229.5922{col 39}{space 1}    2.30{col 48}{space 3}0.021{col 56}{space 4} 79.00106{col 69}{space 3} 979.0299
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2}  .905328{col 28}{space 2} .1665823{col 39}{space 1}    5.43{col 48}{space 3}0.000{col 56}{space 4} .5788168{col 69}{space 3} 1.231839
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2} .6744678{col 28}{space 2} .1711694{col 39}{space 1}    3.94{col 48}{space 3}0.000{col 56}{space 4} .3389655{col 69}{space 3}  1.00997
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-22.59574{col 28}{space 2} 3.018959{col 39}{space 1}   -7.48{col 48}{space 3}0.000{col 56}{space 4}-28.51308{col 69}{space 3} -16.6784
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. // 2-stage fixed-effects HAC regression:
+. qui xtreg interest_index L(1/2).interest_index L(0/3).relspread1w ///
+>         logturnover1w logmarketcap1w, fe
+{txt}
+{com}. qui predict resid3, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).relspread1w logturnover1w ///
+>         logmarketcap1w resid3, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,708
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,     24698){col 67}= {res}   2807.76
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2148493{col 28}{space 2}   .00745{col 39}{space 1}   28.84{col 48}{space 3}0.000{col 56}{space 4} .2002468{col 69}{space 3} .2294518
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1778569{col 28}{space 2} .0076038{col 39}{space 1}   23.39{col 48}{space 3}0.000{col 56}{space 4} .1629531{col 69}{space 3} .1927607
+{txt}{space 14} {c |}
+{space 3}relspread1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2}-291.5251{col 28}{space 2}  238.103{col 39}{space 1}   -1.22{col 48}{space 3}0.221{col 56}{space 4}-758.2213{col 69}{space 3}  175.171
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-308.0519{col 28}{space 2} 206.6847{col 39}{space 1}   -1.49{col 48}{space 3}0.136{col 56}{space 4}-713.1663{col 69}{space 3} 97.06252
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-329.7626{col 28}{space 2} 196.4395{col 39}{space 1}   -1.68{col 48}{space 3}0.093{col 56}{space 4}-714.7957{col 69}{space 3} 55.27053
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 16.04281{col 28}{space 2} 261.7005{col 39}{space 1}    0.06{col 48}{space 3}0.951{col 56}{space 4}-496.9058{col 69}{space 3} 528.9914
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 5.448067{col 28}{space 2} .1948031{col 39}{space 1}   27.97{col 48}{space 3}0.000{col 56}{space 4} 5.066241{col 69}{space 3} 5.829893
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-4.758829{col 28}{space 2}  .213717{col 39}{space 1}  -22.27{col 48}{space 3}0.000{col 56}{space 4}-5.177727{col 69}{space 3}-4.339931
+{txt}{space 8}resid3 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0201156{col 39}{space 1}   49.71{col 48}{space 3}0.000{col 56}{space 4} .9605722{col 69}{space 3} 1.039428
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 36.03855{col 28}{space 2} 3.822995{col 39}{space 1}    9.43{col 48}{space 3}0.000{col 56}{space 4} 28.54525{col 69}{space 3} 43.53185
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. ** ----------------------------- MODEL 4 -----------------------------
+. xtreg interest_index log_illiq_1w logturnover1w logmarketcap1w
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}    24,969
+{txt}Group variable: {res}id                              {txt}Number of groups  = {res}        87
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.0244                                         {txt}min = {res}       287
+{txt}     Between = {res}0.0098                                         {txt}avg = {res}     287.0
+{txt}     Overall = {res}0.0005                                         {txt}max = {res}       287
+
+                                                {txt}Wald chi2({res}3{txt})      =  {res}   611.07
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  Std. err.{col 40}      z{col 48}   P>|z|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}log_illiq_1w {c |}{col 16}{res}{space 2} 1.966797{col 28}{space 2} .2103493{col 39}{space 1}    9.35{col 48}{space 3}0.000{col 56}{space 4}  1.55452{col 69}{space 3} 2.379074
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 7.706497{col 28}{space 2} .3214945{col 39}{space 1}   23.97{col 48}{space 3}0.000{col 56}{space 4} 7.076379{col 69}{space 3} 8.336615
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-4.817426{col 28}{space 2}  .450485{col 39}{space 1}  -10.69{col 48}{space 3}0.000{col 56}{space 4} -5.70036{col 69}{space 3}-3.934492
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 53.49314{col 28}{space 2} 9.888777{col 39}{space 1}    5.41{col 48}{space 3}0.000{col 56}{space 4} 34.11149{col 69}{space 3} 72.87479
+{txt}{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+       sigma_u {c |} {res}  15.11708
+       {txt}sigma_e {c |} {res} 19.405493
+           {txt}rho {c |} {res} .37766714{txt}   (fraction of variance due to u_i)
+{hline 15}{c BT}{hline 64}
+
+{com}. 
+. newey interest_index L(1/2).interest_index L(0/4).log_illiq_1w logturnover1w ///
+>         logmarketcap1w, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,621
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,     24611){col 67}= {res}   1456.08
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .3636619{col 28}{space 2} .0065188{col 39}{space 1}   55.79{col 48}{space 3}0.000{col 56}{space 4} .3508847{col 69}{space 3} .3764391
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .3256917{col 28}{space 2}  .006813{col 39}{space 1}   47.80{col 48}{space 3}0.000{col 56}{space 4} .3123378{col 69}{space 3} .3390455
+{txt}{space 14} {c |}
+{space 2}log_illiq_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 1.266843{col 28}{space 2} .2346116{col 39}{space 1}    5.40{col 48}{space 3}0.000{col 56}{space 4} .8069901{col 69}{space 3} 1.726696
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} .6091936{col 28}{space 2} .2369343{col 39}{space 1}    2.57{col 48}{space 3}0.010{col 56}{space 4} .1447882{col 69}{space 3} 1.073599
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}   .75378{col 28}{space 2} .2439829{col 39}{space 1}    3.09{col 48}{space 3}0.002{col 56}{space 4} .2755589{col 69}{space 3} 1.232001
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} .8838369{col 28}{space 2} .2352189{col 39}{space 1}    3.76{col 48}{space 3}0.000{col 56}{space 4} .4227937{col 69}{space 3}  1.34488
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} .6962654{col 28}{space 2} .2241182{col 39}{space 1}    3.11{col 48}{space 3}0.002{col 56}{space 4} .2569801{col 69}{space 3} 1.135551
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2}  4.45605{col 28}{space 2} .2637706{col 39}{space 1}   16.89{col 48}{space 3}0.000{col 56}{space 4} 3.939044{col 69}{space 3} 4.973056
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2} 1.288704{col 28}{space 2} .1509656{col 39}{space 1}    8.54{col 48}{space 3}0.000{col 56}{space 4} .9928025{col 69}{space 3} 1.584606
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-4.201493{col 28}{space 2} 2.709009{col 39}{space 1}   -1.55{col 48}{space 3}0.121{col 56}{space 4}-9.511314{col 69}{space 3} 1.108328
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. // 2-stage fixed-effects HAC regression:
+. qui xtreg interest_index L(1/2).interest_index L(0/4).log_illiq_1w ///
+>         logturnover1w logmarketcap1w, fe
+{txt}
+{com}. qui predict resid4, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/4).log_illiq_1w logturnover1w ///
+>         logmarketcap1w resid4, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,621
+{txt}Maximum lag = {res}5{col 49}{txt}F( 10,     24610){col 67}= {res}   2509.80
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2134692{col 28}{space 2} .0074223{col 39}{space 1}   28.76{col 48}{space 3}0.000{col 56}{space 4} .1989211{col 69}{space 3} .2280174
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1774744{col 28}{space 2}  .007608{col 39}{space 1}   23.33{col 48}{space 3}0.000{col 56}{space 4} .1625622{col 69}{space 3} .1923865
+{txt}{space 14} {c |}
+{space 2}log_illiq_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 1.030626{col 28}{space 2}  .221729{col 39}{space 1}    4.65{col 48}{space 3}0.000{col 56}{space 4} .5960235{col 69}{space 3} 1.465228
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} .2114811{col 28}{space 2} .2196369{col 39}{space 1}    0.96{col 48}{space 3}0.336{col 56}{space 4}-.2190205{col 69}{space 3} .6419828
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  .433766{col 28}{space 2} .2233301{col 39}{space 1}    1.94{col 48}{space 3}0.052{col 56}{space 4}-.0039744{col 69}{space 3} .8715065
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} .6482917{col 28}{space 2} .2194293{col 39}{space 1}    2.95{col 48}{space 3}0.003{col 56}{space 4}  .218197{col 69}{space 3} 1.078386
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} .5352552{col 28}{space 2} .2097259{col 39}{space 1}    2.55{col 48}{space 3}0.011{col 56}{space 4} .1241797{col 69}{space 3} .9463307
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 6.773097{col 28}{space 2} .2857368{col 39}{space 1}   23.70{col 48}{space 3}0.000{col 56}{space 4} 6.213035{col 69}{space 3} 7.333158
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-3.005615{col 28}{space 2} .1896189{col 39}{space 1}  -15.85{col 48}{space 3}0.000{col 56}{space 4} -3.37728{col 69}{space 3} -2.63395
+{txt}{space 8}resid4 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0208124{col 39}{space 1}   48.05{col 48}{space 3}0.000{col 56}{space 4} .9592064{col 69}{space 3} 1.040794
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 35.07501{col 28}{space 2} 3.355001{col 39}{space 1}   10.45{col 48}{space 3}0.000{col 56}{space 4} 28.49901{col 69}{space 3} 41.65102
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. ** ----------------------------- MODEL 5 -----------------------------
+. xtreg interest_index ret1d_1w logturnover1w spread1w logmarketcap1w
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}    24,969
+{txt}Group variable: {res}id                              {txt}Number of groups  = {res}        87
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.0224                                         {txt}min = {res}       287
+{txt}     Between = {res}0.0180                                         {txt}avg = {res}     287.0
+{txt}     Overall = {res}0.0002                                         {txt}max = {res}       287
+
+                                                {txt}Wald chi2({res}4{txt})      =  {res}   552.45
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  Std. err.{col 40}      z{col 48}   P>|z|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}ret1d_1w {c |}{col 16}{res}{space 2} 67.76316{col 28}{space 2}  12.9101{col 39}{space 1}    5.25{col 48}{space 3}0.000{col 56}{space 4} 42.45982{col 69}{space 3} 93.06649
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 6.625856{col 28}{space 2} .2980446{col 39}{space 1}   22.23{col 48}{space 3}0.000{col 56}{space 4}   6.0417{col 69}{space 3} 7.210013
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 1.543127{col 28}{space 2} 1.036347{col 39}{space 1}    1.49{col 48}{space 3}0.136{col 56}{space 4}-.4880766{col 69}{space 3}  3.57433
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-5.840383{col 28}{space 2} .4416684{col 39}{space 1}  -13.22{col 48}{space 3}0.000{col 56}{space 4}-6.706037{col 69}{space 3}-4.974729
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 52.40185{col 28}{space 2} 9.939129{col 39}{space 1}    5.27{col 48}{space 3}0.000{col 56}{space 4} 32.92151{col 69}{space 3} 71.88218
+{txt}{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+       sigma_u {c |} {res} 15.217072
+       {txt}sigma_e {c |} {res} 19.425786
+           {txt}rho {c |} {res} .38027838{txt}   (fraction of variance due to u_i)
+{hline 15}{c BT}{hline 64}
+
+{com}. 
+. newey interest_index L(1/2).interest_index L(0/2).ret1d_1w logturnover1w ///
+>         spread1w logmarketcap1w, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,795
+{txt}Maximum lag = {res}5{col 49}{txt}F(  8,     24786){col 67}= {res}   1571.30
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .3702471{col 28}{space 2} .0065028{col 39}{space 1}   56.94{col 48}{space 3}0.000{col 56}{space 4} .3575013{col 69}{space 3} .3829929
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .3282236{col 28}{space 2} .0067833{col 39}{space 1}   48.39{col 48}{space 3}0.000{col 56}{space 4} .3149279{col 69}{space 3} .3415193
+{txt}{space 14} {c |}
+{space 6}ret1d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 33.21214{col 28}{space 2} 14.57959{col 39}{space 1}    2.28{col 48}{space 3}0.023{col 56}{space 4} 4.635275{col 69}{space 3} 61.78901
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-7.808859{col 28}{space 2} 12.99995{col 39}{space 1}   -0.60{col 48}{space 3}0.548{col 56}{space 4}-33.28955{col 69}{space 3} 17.67183
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} -9.93108{col 28}{space 2} 12.34618{col 39}{space 1}   -0.80{col 48}{space 3}0.421{col 56}{space 4}-34.13033{col 69}{space 3} 14.26817
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 1.615178{col 28}{space 2} .2228714{col 39}{space 1}    7.25{col 48}{space 3}0.000{col 56}{space 4} 1.178337{col 69}{space 3} 2.052019
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2}-4.114398{col 28}{space 2}  .740975{col 39}{space 1}   -5.55{col 48}{space 3}0.000{col 56}{space 4}-5.566753{col 69}{space 3}-2.662043
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-.0800194{col 28}{space 2}  .193363{col 39}{space 1}   -0.41{col 48}{space 3}0.679{col 56}{space 4}-.4590224{col 69}{space 3} .2989836
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-16.45022{col 28}{space 2} 2.632171{col 39}{space 1}   -6.25{col 48}{space 3}0.000{col 56}{space 4}-21.60943{col 69}{space 3}-11.29101
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. // 2-stage fixed-effects HAC regression:
+. qui xtreg interest_index L(1/2).interest_index L(0/2).ret1d_1w logturnover1w ///
+>         spread1w logmarketcap1w, fe
+{txt}
+{com}. qui predict resid5, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/2).ret1d_1w logturnover1w ///
+>         spread1w logmarketcap1w resid5, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,795
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,     24785){col 67}= {res}   2828.18
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2151313{col 28}{space 2} .0074375{col 39}{space 1}   28.93{col 48}{space 3}0.000{col 56}{space 4} .2005533{col 69}{space 3} .2297093
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1763984{col 28}{space 2}  .007604{col 39}{space 1}   23.20{col 48}{space 3}0.000{col 56}{space 4} .1614942{col 69}{space 3} .1913026
+{txt}{space 14} {c |}
+{space 6}ret1d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 54.03698{col 28}{space 2} 13.64288{col 39}{space 1}    3.96{col 48}{space 3}0.000{col 56}{space 4} 27.29612{col 69}{space 3} 80.77784
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 20.86785{col 28}{space 2} 12.51027{col 39}{space 1}    1.67{col 48}{space 3}0.095{col 56}{space 4}-3.653029{col 69}{space 3} 45.38874
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  21.6406{col 28}{space 2} 11.91627{col 39}{space 1}    1.82{col 48}{space 3}0.069{col 56}{space 4}   -1.716{col 69}{space 3} 44.99719
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 5.494492{col 28}{space 2} .2312727{col 39}{space 1}   23.76{col 48}{space 3}0.000{col 56}{space 4} 5.041183{col 69}{space 3}   5.9478
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 1.879646{col 28}{space 2} .6715752{col 39}{space 1}    2.80{col 48}{space 3}0.005{col 56}{space 4} .5633179{col 69}{space 3} 3.195973
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-4.625204{col 28}{space 2} .2190155{col 39}{space 1}  -21.12{col 48}{space 3}0.000{col 56}{space 4}-5.054488{col 69}{space 3}-4.195921
+{txt}{space 8}resid5 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0202696{col 39}{space 1}   49.33{col 48}{space 3}0.000{col 56}{space 4} .9602703{col 69}{space 3}  1.03973
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 31.54352{col 28}{space 2} 3.298494{col 39}{space 1}    9.56{col 48}{space 3}0.000{col 56}{space 4} 25.07828{col 69}{space 3} 38.00877
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. ** ----------------------------- MODEL 6 -----------------------------
+. xtreg interest_index ret5d_1w logturnover1w spread1w logmarketcap1w
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}    24,882
+{txt}Group variable: {res}id                              {txt}Number of groups  = {res}        87
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.0228                                         {txt}min = {res}       286
+{txt}     Between = {res}0.0188                                         {txt}avg = {res}     286.0
+{txt}     Overall = {res}0.0003                                         {txt}max = {res}       286
+
+                                                {txt}Wald chi2({res}4{txt})      =  {res}   560.72
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  Std. err.{col 40}      z{col 48}   P>|z|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}ret5d_1w {c |}{col 16}{res}{space 2} 20.15092{col 28}{space 2} 3.264602{col 39}{space 1}    6.17{col 48}{space 3}0.000{col 56}{space 4} 13.75242{col 69}{space 3} 26.54942
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 6.672167{col 28}{space 2} .2991847{col 39}{space 1}   22.30{col 48}{space 3}0.000{col 56}{space 4} 6.085775{col 69}{space 3} 7.258558
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 1.489739{col 28}{space 2} 1.036949{col 39}{space 1}    1.44{col 48}{space 3}0.151{col 56}{space 4} -.542644{col 69}{space 3} 3.522122
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-5.937333{col 28}{space 2}  .443526{col 39}{space 1}  -13.39{col 48}{space 3}0.000{col 56}{space 4}-6.806628{col 69}{space 3}-5.068038
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 53.85829{col 28}{space 2} 9.976419{col 39}{space 1}    5.40{col 48}{space 3}0.000{col 56}{space 4} 34.30487{col 69}{space 3} 73.41172
+{txt}{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+       sigma_u {c |} {res} 15.254947
+       {txt}sigma_e {c |} {res} 19.424275
+           {txt}rho {c |} {res} .38148748{txt}   (fraction of variance due to u_i)
+{hline 15}{c BT}{hline 64}
+
+{com}. 
+. newey interest_index L(1/2).interest_index L(0/4).ret5d_1w logturnover1w ///
+>         spread1w logmarketcap1w, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,534
+{txt}Maximum lag = {res}5{col 49}{txt}F( 10,     24523){col 67}= {res}   1256.07
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .3717462{col 28}{space 2} .0065613{col 39}{space 1}   56.66{col 48}{space 3}0.000{col 56}{space 4} .3588856{col 69}{space 3} .3846068
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .3280791{col 28}{space 2} .0068379{col 39}{space 1}   47.98{col 48}{space 3}0.000{col 56}{space 4} .3146765{col 69}{space 3} .3414818
+{txt}{space 14} {c |}
+{space 6}ret5d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 11.73123{col 28}{space 2}  3.92745{col 39}{space 1}    2.99{col 48}{space 3}0.003{col 56}{space 4} 4.033193{col 69}{space 3} 19.42927
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-6.176114{col 28}{space 2} 3.325768{col 39}{space 1}   -1.86{col 48}{space 3}0.063{col 56}{space 4}-12.69482{col 69}{space 3}  .342593
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .0743831{col 28}{space 2} 3.207401{col 39}{space 1}    0.02{col 48}{space 3}0.981{col 56}{space 4}-6.212317{col 69}{space 3} 6.361084
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-1.175593{col 28}{space 2} 3.313423{col 39}{space 1}   -0.35{col 48}{space 3}0.723{col 56}{space 4}-7.670103{col 69}{space 3} 5.318917
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2}-2.443903{col 28}{space 2} 3.075581{col 39}{space 1}   -0.79{col 48}{space 3}0.427{col 56}{space 4}-8.472229{col 69}{space 3} 3.584423
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 1.622567{col 28}{space 2} .2242389{col 39}{space 1}    7.24{col 48}{space 3}0.000{col 56}{space 4} 1.183045{col 69}{space 3} 2.062089
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2}-4.121409{col 28}{space 2}  .742618{col 39}{space 1}   -5.55{col 48}{space 3}0.000{col 56}{space 4}-5.576985{col 69}{space 3}-2.665833
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-.1064132{col 28}{space 2} .1942183{col 39}{space 1}   -0.55{col 48}{space 3}0.584{col 56}{space 4}-.4870928{col 69}{space 3} .2742664
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-16.02005{col 28}{space 2} 2.627375{col 39}{space 1}   -6.10{col 48}{space 3}0.000{col 56}{space 4}-21.16987{col 69}{space 3}-10.87023
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. // 2-stage fixed-effects HAC regression:
+. qui xtreg interest_index L(1/2).interest_index L(0/4).ret5d_1w logturnover1w ///
+>         spread1w logmarketcap1w, fe
+{txt}
+{com}. qui predict resid6,u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/4).ret5d_1w logturnover1w ///
+>         spread1w logmarketcap1w resid6, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,534
+{txt}Maximum lag = {res}5{col 49}{txt}F( 11,     24522){col 67}= {res}   2302.39
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2}  .216643{col 28}{space 2} .0075099{col 39}{space 1}   28.85{col 48}{space 3}0.000{col 56}{space 4} .2019231{col 69}{space 3}  .231363
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1769009{col 28}{space 2} .0076513{col 39}{space 1}   23.12{col 48}{space 3}0.000{col 56}{space 4} .1619038{col 69}{space 3} .1918979
+{txt}{space 14} {c |}
+{space 6}ret5d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 17.56985{col 28}{space 2} 3.686719{col 39}{space 1}    4.77{col 48}{space 3}0.000{col 56}{space 4} 10.34365{col 69}{space 3} 24.79604
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-.3866286{col 28}{space 2} 3.089605{col 39}{space 1}   -0.13{col 48}{space 3}0.900{col 56}{space 4}-6.442443{col 69}{space 3} 5.669186
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  6.43166{col 28}{space 2} 3.121449{col 39}{space 1}    2.06{col 48}{space 3}0.039{col 56}{space 4} .3134299{col 69}{space 3} 12.54989
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 1.834091{col 28}{space 2} 3.172578{col 39}{space 1}    0.58{col 48}{space 3}0.563{col 56}{space 4}-4.384355{col 69}{space 3} 8.052537
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} 2.511067{col 28}{space 2} 3.064395{col 39}{space 1}    0.82{col 48}{space 3}0.413{col 56}{space 4}-3.495334{col 69}{space 3} 8.517468
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2}  5.58057{col 28}{space 2} .2336288{col 39}{space 1}   23.89{col 48}{space 3}0.000{col 56}{space 4} 5.122643{col 69}{space 3} 6.038497
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 1.911556{col 28}{space 2} .6695944{col 39}{space 1}    2.85{col 48}{space 3}0.004{col 56}{space 4} .5991107{col 69}{space 3} 3.224002
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-4.791097{col 28}{space 2} .2220607{col 39}{space 1}  -21.58{col 48}{space 3}0.000{col 56}{space 4}-5.226349{col 69}{space 3}-4.355844
+{txt}{space 8}resid6 {c |}{col 16}{res}{space 2}        1{col 28}{space 2}  .020443{col 39}{space 1}   48.92{col 48}{space 3}0.000{col 56}{space 4} .9599306{col 69}{space 3} 1.040069
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 33.82358{col 28}{space 2} 3.323617{col 39}{space 1}   10.18{col 48}{space 3}0.000{col 56}{space 4} 27.30909{col 69}{space 3} 40.33807
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. ** ----------------------------- MODEL 7 -----------------------------
+. xtreg interest_index logvolume1w logturnover1w spread1w logmarketcap1w
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}    24,969
+{txt}Group variable: {res}id                              {txt}Number of groups  = {res}        87
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.0332                                         {txt}min = {res}       287
+{txt}     Between = {res}0.1144                                         {txt}avg = {res}     287.0
+{txt}     Overall = {res}0.0602                                         {txt}max = {res}       287
+
+                                                {txt}Wald chi2({res}4{txt})      =  {res}   850.32
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  Std. err.{col 40}      z{col 48}   P>|z|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 3}logvolume1w {c |}{col 16}{res}{space 2} 9.130314{col 28}{space 2}  .511249{col 39}{space 1}   17.86{col 48}{space 3}0.000{col 56}{space 4} 8.128284{col 69}{space 3} 10.13234
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2}-.8506939{col 28}{space 2} .5103012{col 39}{space 1}   -1.67{col 48}{space 3}0.096{col 56}{space 4}-1.850866{col 69}{space 3} .1494781
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2}  1.92648{col 28}{space 2} 1.030692{col 39}{space 1}    1.87{col 48}{space 3}0.062{col 56}{space 4}  -.09364{col 69}{space 3}   3.9466
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-.6034439{col 28}{space 2} .5276049{col 39}{space 1}   -1.14{col 48}{space 3}0.253{col 56}{space 4}-1.637531{col 69}{space 3} .4306428
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-75.77805{col 28}{space 2} 12.23712{col 39}{space 1}   -6.19{col 48}{space 3}0.000{col 56}{space 4}-99.76235{col 69}{space 3}-51.79374
+{txt}{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+       sigma_u {c |} {res} 15.275557
+       {txt}sigma_e {c |} {res}  19.31775
+           {txt}rho {c |} {res} .38472495{txt}   (fraction of variance due to u_i)
+{hline 15}{c BT}{hline 64}
+
+{com}. 
+. newey interest_index L(1/2).interest_index L(0/3).logvolume1w logturnover1w ///
+>         spread1w logmarketcap1w, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,708
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,     24698){col 67}= {res}   1647.77
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .3607593{col 28}{space 2} .0066299{col 39}{space 1}   54.41{col 48}{space 3}0.000{col 56}{space 4} .3477642{col 69}{space 3} .3737544
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  .327796{col 28}{space 2} .0069764{col 39}{space 1}   46.99{col 48}{space 3}0.000{col 56}{space 4} .3141218{col 69}{space 3} .3414702
+{txt}{space 14} {c |}
+{space 3}logvolume1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 6.863152{col 28}{space 2} .4419816{col 39}{space 1}   15.53{col 48}{space 3}0.000{col 56}{space 4} 5.996841{col 69}{space 3} 7.729462
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-1.082274{col 28}{space 2}  .459479{col 39}{space 1}   -2.36{col 48}{space 3}0.019{col 56}{space 4} -1.98288{col 69}{space 3}-.1816673
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-3.279669{col 28}{space 2} .4689925{col 39}{space 1}   -6.99{col 48}{space 3}0.000{col 56}{space 4}-4.198923{col 69}{space 3}-2.360416
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-1.199734{col 28}{space 2} .3907899{col 39}{space 1}   -3.07{col 48}{space 3}0.002{col 56}{space 4}-1.965705{col 69}{space 3}-.4337622
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2}-.2312963{col 28}{space 2} .1836036{col 39}{space 1}   -1.26{col 48}{space 3}0.208{col 56}{space 4}-.5911704{col 69}{space 3} .1285777
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} .0562084{col 28}{space 2} .6275348{col 39}{space 1}    0.09{col 48}{space 3}0.929{col 56}{space 4}-1.173797{col 69}{space 3} 1.286214
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2} .5620398{col 28}{space 2} .1659155{col 39}{space 1}    3.39{col 48}{space 3}0.001{col 56}{space 4} .2368355{col 69}{space 3} .8872442
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-18.72699{col 28}{space 2} 2.706687{col 39}{space 1}   -6.92{col 48}{space 3}0.000{col 56}{space 4}-24.03226{col 69}{space 3}-13.42172
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. // 2-stage fixed-effects HAC regression:
+. qui xtreg interest_index L(1/2).interest_index L(0/3).logvolume1w ///
+>         logturnover1w spread1w logmarketcap1w, fe
+{txt}
+{com}. qui predict resid7, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).logvolume1w logturnover1w ///
+>         spread1w logmarketcap1w resid7, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,708
+{txt}Maximum lag = {res}5{col 49}{txt}F( 10,     24697){col 67}= {res}   2559.65
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2099161{col 28}{space 2} .0075205{col 39}{space 1}   27.91{col 48}{space 3}0.000{col 56}{space 4} .1951755{col 69}{space 3} .2246567
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1771643{col 28}{space 2} .0077733{col 39}{space 1}   22.79{col 48}{space 3}0.000{col 56}{space 4} .1619283{col 69}{space 3} .1924004
+{txt}{space 14} {c |}
+{space 3}logvolume1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 7.917951{col 28}{space 2} .4233421{col 39}{space 1}   18.70{col 48}{space 3}0.000{col 56}{space 4} 7.088175{col 69}{space 3} 8.747727
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} .4376535{col 28}{space 2} .4242636{col 39}{space 1}    1.03{col 48}{space 3}0.302{col 56}{space 4}-.3939287{col 69}{space 3} 1.269236
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-1.525357{col 28}{space 2} .4316799{col 39}{space 1}   -3.53{col 48}{space 3}0.000{col 56}{space 4}-2.371475{col 69}{space 3}-.6792383
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-.1729943{col 28}{space 2} .3678058{col 39}{space 1}   -0.47{col 48}{space 3}0.638{col 56}{space 4}-.8939156{col 69}{space 3} .5479271
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2}-.7473292{col 28}{space 2} .2130052{col 39}{space 1}   -3.51{col 48}{space 3}0.000{col 56}{space 4}-1.164832{col 69}{space 3}-.3298263
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 1.760433{col 28}{space 2} .7098128{col 39}{space 1}    2.48{col 48}{space 3}0.013{col 56}{space 4} .3691576{col 69}{space 3} 3.151709
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-.0667673{col 28}{space 2} .1908523{col 39}{space 1}   -0.35{col 48}{space 3}0.726{col 56}{space 4}-.4408491{col 69}{space 3} .3073146
+{txt}{space 8}resid7 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0210651{col 39}{space 1}   47.47{col 48}{space 3}0.000{col 56}{space 4} .9587111{col 69}{space 3} 1.041289
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} -65.3375{col 28}{space 2} 3.200476{col 39}{space 1}  -20.41{col 48}{space 3}0.000{col 56}{space 4}-71.61063{col 69}{space 3}-59.06438
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. 
+. // -------------------------------------------------------------------------- //
+. //                               Running Models by Market Capitialisation                                         //
+. // -------------------------------------------------------------------------- //
+. 
+. /* -----------------------------------------------------------------------------
+>         Note that all models in this section use the 2-stage fixed-effects HAC 
+>         regression. I.e., regressing using first-stage fixed effects regression 
+>         residuals.
+> ----------------------------------------------------------------------------- */
+. 
+. ** ----------------------------- MODEL 1 -----------------------------
+. qui xtreg interest_index L(1/2).interest_index L(0/3).vol_1w logmarketcap1w ///
+>         spread1w logturnover1w if mc25==1, fe
+{txt}
+{com}. qui predict resid1_mc25, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).vol_1w logmarketcap1w ///
+>         spread1w logturnover1w resid1_mc25 if mc25==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     5,964
+{txt}Maximum lag = {res}5{col 49}{txt}F( 10,      5953){col 67}= {res}    257.37
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .1493507{col 28}{space 2} .0148543{col 39}{space 1}   10.05{col 48}{space 3}0.000{col 56}{space 4} .1202309{col 69}{space 3} .1784705
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  .122056{col 28}{space 2} .0147177{col 39}{space 1}    8.29{col 48}{space 3}0.000{col 56}{space 4} .0932039{col 69}{space 3}  .150908
+{txt}{space 14} {c |}
+{space 8}vol_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 107.8026{col 28}{space 2} 23.54973{col 39}{space 1}    4.58{col 48}{space 3}0.000{col 56}{space 4} 61.63662{col 69}{space 3} 153.9687
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 15.73317{col 28}{space 2}  17.7681{col 39}{space 1}    0.89{col 48}{space 3}0.376{col 56}{space 4}-19.09876{col 69}{space 3} 50.56509
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-19.19302{col 28}{space 2}   18.022{col 39}{space 1}   -1.06{col 48}{space 3}0.287{col 56}{space 4}-54.52267{col 69}{space 3} 16.13664
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 8.783203{col 28}{space 2} 18.28199{col 39}{space 1}    0.48{col 48}{space 3}0.631{col 56}{space 4}-27.05612{col 69}{space 3} 44.62252
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2} 2.447225{col 28}{space 2} .7219644{col 39}{space 1}    3.39{col 48}{space 3}0.001{col 56}{space 4} 1.031913{col 69}{space 3} 3.862537
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} .6123446{col 28}{space 2} .7795428{col 39}{space 1}    0.79{col 48}{space 3}0.432{col 56}{space 4}-.9158419{col 69}{space 3} 2.140531
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 2.842577{col 28}{space 2} .2916549{col 39}{space 1}    9.75{col 48}{space 3}0.000{col 56}{space 4} 2.270828{col 69}{space 3} 3.414326
+{txt}{space 3}resid1_mc25 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0386891{col 39}{space 1}   25.85{col 48}{space 3}0.000{col 56}{space 4} .9241553{col 69}{space 3} 1.075845
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-85.04534{col 28}{space 2} 16.14457{col 39}{space 1}   -5.27{col 48}{space 3}0.000{col 56}{space 4}-116.6946{col 69}{space 3}-53.39612
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/3).vol_1w logmarketcap1w ///
+>         spread1w logturnover1w if mc50==1, fe
+{txt}
+{com}. qui predict resid1_mc50, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).vol_1w logmarketcap1w ///
+>         spread1w logturnover1w resid1_mc50 if mc50==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    12,496
+{txt}Maximum lag = {res}5{col 49}{txt}F( 10,     12485){col 67}= {res}   1588.98
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2017192{col 28}{space 2} .0103426{col 39}{space 1}   19.50{col 48}{space 3}0.000{col 56}{space 4} .1814462{col 69}{space 3} .2219922
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1872977{col 28}{space 2} .0108259{col 39}{space 1}   17.30{col 48}{space 3}0.000{col 56}{space 4} .1660774{col 69}{space 3} .2085181
+{txt}{space 14} {c |}
+{space 8}vol_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 125.4182{col 28}{space 2} 15.76168{col 39}{space 1}    7.96{col 48}{space 3}0.000{col 56}{space 4} 94.52284{col 69}{space 3} 156.3135
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 15.63498{col 28}{space 2} 15.22097{col 39}{space 1}    1.03{col 48}{space 3}0.304{col 56}{space 4}-14.20047{col 69}{space 3} 45.47043
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-37.82469{col 28}{space 2} 16.16724{col 39}{space 1}   -2.34{col 48}{space 3}0.019{col 56}{space 4}-69.51498{col 69}{space 3}-6.134397
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 13.50615{col 28}{space 2} 14.01923{col 39}{space 1}    0.96{col 48}{space 3}0.335{col 56}{space 4}-13.97369{col 69}{space 3}   40.986
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2}-4.990154{col 28}{space 2} .5108566{col 39}{space 1}   -9.77{col 48}{space 3}0.000{col 56}{space 4}-5.991512{col 69}{space 3}-3.988797
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2}-1.973996{col 28}{space 2} 10.20881{col 39}{space 1}   -0.19{col 48}{space 3}0.847{col 56}{space 4}-21.98483{col 69}{space 3} 18.03684
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 3.902815{col 28}{space 2} .4083948{col 39}{space 1}    9.56{col 48}{space 3}0.000{col 56}{space 4} 3.102298{col 69}{space 3} 4.703331
+{txt}{space 3}resid1_mc50 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0276792{col 39}{space 1}   36.13{col 48}{space 3}0.000{col 56}{space 4} .9457445{col 69}{space 3} 1.054256
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 64.75566{col 28}{space 2} 9.270264{col 39}{space 1}    6.99{col 48}{space 3}0.000{col 56}{space 4} 46.58452{col 69}{space 3} 82.92681
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/3).vol_1w logmarketcap1w ///
+>         spread1w logturnover1w if mc75==1, fe
+{txt}
+{com}. qui predict resid1_mc75, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).vol_1w logmarketcap1w ///
+>         spread1w logturnover1w resid1_mc75 if mc75==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     6,248
+{txt}Maximum lag = {res}5{col 49}{txt}F( 10,      6237){col 67}= {res}    753.50
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2918756{col 28}{space 2} .0149335{col 39}{space 1}   19.54{col 48}{space 3}0.000{col 56}{space 4} .2626007{col 69}{space 3} .3211504
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1998215{col 28}{space 2}  .015681{col 39}{space 1}   12.74{col 48}{space 3}0.000{col 56}{space 4} .1690815{col 69}{space 3} .2305616
+{txt}{space 14} {c |}
+{space 8}vol_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 169.4088{col 28}{space 2} 27.22371{col 39}{space 1}    6.22{col 48}{space 3}0.000{col 56}{space 4}  116.041{col 69}{space 3} 222.7767
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-21.72873{col 28}{space 2} 22.58486{col 39}{space 1}   -0.96{col 48}{space 3}0.336{col 56}{space 4}-66.00284{col 69}{space 3} 22.54537
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-78.54618{col 28}{space 2} 22.87927{col 39}{space 1}   -3.43{col 48}{space 3}0.001{col 56}{space 4}-123.3974{col 69}{space 3}-33.69493
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-47.17246{col 28}{space 2} 22.25864{col 39}{space 1}   -2.12{col 48}{space 3}0.034{col 56}{space 4}-90.80707{col 69}{space 3}-3.537858
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2}-7.828198{col 28}{space 2} .5629136{col 39}{space 1}  -13.91{col 48}{space 3}0.000{col 56}{space 4}-8.931703{col 69}{space 3}-6.724694
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2}-39.61451{col 28}{space 2} 22.99812{col 39}{space 1}   -1.72{col 48}{space 3}0.085{col 56}{space 4}-84.69876{col 69}{space 3}  5.46973
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 7.363673{col 28}{space 2} .6305547{col 39}{space 1}   11.68{col 48}{space 3}0.000{col 56}{space 4} 6.127568{col 69}{space 3} 8.599777
+{txt}{space 3}resid1_mc75 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0489595{col 39}{space 1}   20.43{col 48}{space 3}0.000{col 56}{space 4} .9040225{col 69}{space 3} 1.095978
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}  77.6149{col 28}{space 2} 10.26094{col 39}{space 1}    7.56{col 48}{space 3}0.000{col 56}{space 4} 57.49992{col 69}{space 3} 97.72989
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. ** ----------------------------- MODEL 2 -----------------------------
+. qui xtreg interest_index L(1/2).interest_index L(0/2).loghl_1w ///
+>         logmarketcap1w spread1w logturnover1w if mc25==1, fe
+{txt}
+{com}. qui predict resid2_mc25, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/2).loghl_1w logmarketcap1w ///
+>         spread1w logturnover1w resid2_mc25 if mc25==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     5,985
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,      5975){col 67}= {res}    286.79
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .1500149{col 28}{space 2} .0146758{col 39}{space 1}   10.22{col 48}{space 3}0.000{col 56}{space 4} .1212451{col 69}{space 3} .1787848
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  .120208{col 28}{space 2} .0145858{col 39}{space 1}    8.24{col 48}{space 3}0.000{col 56}{space 4} .0916146{col 69}{space 3} .1488013
+{txt}{space 14} {c |}
+{space 6}loghl_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 90.19983{col 28}{space 2} 35.21148{col 39}{space 1}    2.56{col 48}{space 3}0.010{col 56}{space 4} 21.17261{col 69}{space 3}  159.227
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-20.02487{col 28}{space 2} 20.90056{col 39}{space 1}   -0.96{col 48}{space 3}0.338{col 56}{space 4}-60.99752{col 69}{space 3} 20.94778
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-2.790964{col 28}{space 2} 20.39833{col 39}{space 1}   -0.14{col 48}{space 3}0.891{col 56}{space 4}-42.77905{col 69}{space 3} 37.19712
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2} 2.211874{col 28}{space 2} .7425779{col 39}{space 1}    2.98{col 48}{space 3}0.003{col 56}{space 4} .7561531{col 69}{space 3} 3.667595
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} .5645771{col 28}{space 2} .7883203{col 39}{space 1}    0.72{col 48}{space 3}0.474{col 56}{space 4}-.9808153{col 69}{space 3}  2.10997
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 3.156658{col 28}{space 2}  .306962{col 39}{space 1}   10.28{col 48}{space 3}0.000{col 56}{space 4} 2.554902{col 69}{space 3} 3.758414
+{txt}{space 3}resid2_mc25 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0383826{col 39}{space 1}   26.05{col 48}{space 3}0.000{col 56}{space 4} .9247563{col 69}{space 3} 1.075244
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-84.59683{col 28}{space 2} 16.57071{col 39}{space 1}   -5.11{col 48}{space 3}0.000{col 56}{space 4}-117.0814{col 69}{space 3}-52.11227
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/2).loghl_1w ///
+>         logmarketcap1w spread1w logturnover1w if mc50==1, fe 
+{txt}
+{com}. qui predict resid2_mc50, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/2).loghl_1w logmarketcap1w ///
+>         spread1w logturnover1w resid2_mc50 if mc50==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    12,540
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,     12530){col 67}= {res}   1769.85
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2028308{col 28}{space 2} .0103714{col 39}{space 1}   19.56{col 48}{space 3}0.000{col 56}{space 4} .1825012{col 69}{space 3} .2231605
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1849834{col 28}{space 2} .0108178{col 39}{space 1}   17.10{col 48}{space 3}0.000{col 56}{space 4} .1637788{col 69}{space 3}  .206188
+{txt}{space 14} {c |}
+{space 6}loghl_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 125.1812{col 28}{space 2} 19.16702{col 39}{space 1}    6.53{col 48}{space 3}0.000{col 56}{space 4} 87.61088{col 69}{space 3} 162.7515
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-28.09925{col 28}{space 2}  18.4965{col 39}{space 1}   -1.52{col 48}{space 3}0.129{col 56}{space 4}-64.35523{col 69}{space 3} 8.156728
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-2.935318{col 28}{space 2} 17.46763{col 39}{space 1}   -0.17{col 48}{space 3}0.867{col 56}{space 4}-37.17456{col 69}{space 3} 31.30392
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2}-5.109538{col 28}{space 2}  .513044{col 39}{space 1}   -9.96{col 48}{space 3}0.000{col 56}{space 4}-6.115183{col 69}{space 3}-4.103893
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} -1.49369{col 28}{space 2} 10.20644{col 39}{space 1}   -0.15{col 48}{space 3}0.884{col 56}{space 4}-21.49987{col 69}{space 3} 18.51249
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 4.103556{col 28}{space 2} .4060494{col 39}{space 1}   10.11{col 48}{space 3}0.000{col 56}{space 4} 3.307637{col 69}{space 3} 4.899475
+{txt}{space 3}resid2_mc50 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0276425{col 39}{space 1}   36.18{col 48}{space 3}0.000{col 56}{space 4} .9458166{col 69}{space 3} 1.054183
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 64.02049{col 28}{space 2} 9.316323{col 39}{space 1}    6.87{col 48}{space 3}0.000{col 56}{space 4} 45.75907{col 69}{space 3} 82.28191
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/2).loghl_1w ///
+>         logmarketcap1w spread1w logturnover1w if mc75==1, fe
+{txt}
+{com}. qui predict resid2_mc75, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/2).loghl_1w logmarketcap1w ///
+>         spread1w logturnover1w resid2_mc75 if mc75==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     6,270
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,      6260){col 67}= {res}    833.24
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2905416{col 28}{space 2} .0148474{col 39}{space 1}   19.57{col 48}{space 3}0.000{col 56}{space 4} .2614355{col 69}{space 3} .3196477
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1967354{col 28}{space 2} .0155729{col 39}{space 1}   12.63{col 48}{space 3}0.000{col 56}{space 4} .1662072{col 69}{space 3} .2272635
+{txt}{space 14} {c |}
+{space 6}loghl_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 126.4181{col 28}{space 2} 36.65714{col 39}{space 1}    3.45{col 48}{space 3}0.001{col 56}{space 4} 54.55752{col 69}{space 3} 198.2786
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} -38.8627{col 28}{space 2} 32.90466{col 39}{space 1}   -1.18{col 48}{space 3}0.238{col 56}{space 4}-103.3671{col 69}{space 3} 25.64171
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-82.28202{col 28}{space 2} 28.12234{col 39}{space 1}   -2.93{col 48}{space 3}0.003{col 56}{space 4}-137.4115{col 69}{space 3}-27.15258
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2}-8.525792{col 28}{space 2} .5834182{col 39}{space 1}  -14.61{col 48}{space 3}0.000{col 56}{space 4}-9.669492{col 69}{space 3}-7.382092
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} -37.0108{col 28}{space 2} 23.46826{col 39}{space 1}   -1.58{col 48}{space 3}0.115{col 56}{space 4}-83.01663{col 69}{space 3} 8.995034
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 8.087509{col 28}{space 2} .6456772{col 39}{space 1}   12.53{col 48}{space 3}0.000{col 56}{space 4}  6.82176{col 69}{space 3} 9.353257
+{txt}{space 3}resid2_mc75 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0483688{col 39}{space 1}   20.67{col 48}{space 3}0.000{col 56}{space 4} .9051805{col 69}{space 3}  1.09482
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 82.02779{col 28}{space 2} 10.41944{col 39}{space 1}    7.87{col 48}{space 3}0.000{col 56}{space 4} 61.60212{col 69}{space 3} 102.4535
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. ** ----------------------------- MODEL 3 -----------------------------
+. qui xtreg interest_index L(1/2).interest_index L(0/3).relspread1w ///
+>         logmarketcap1w logturnover1w if mc25==1, fe
+{txt}
+{com}. qui predict resid3_mc25, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).relspread1w ///
+>         logmarketcap1w logturnover1w resid3_mc25 if mc25==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     5,964
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,      5954){col 67}= {res}    280.70
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .1494622{col 28}{space 2}   .01465{col 39}{space 1}   10.20{col 48}{space 3}0.000{col 56}{space 4} .1207429{col 69}{space 3} .1781815
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1215347{col 28}{space 2} .0145303{col 39}{space 1}    8.36{col 48}{space 3}0.000{col 56}{space 4} .0930501{col 69}{space 3} .1500192
+{txt}{space 14} {c |}
+{space 3}relspread1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2}-27.78137{col 28}{space 2} 392.2514{col 39}{space 1}   -0.07{col 48}{space 3}0.944{col 56}{space 4}-796.7363{col 69}{space 3} 741.1736
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-353.6316{col 28}{space 2} 400.0749{col 39}{space 1}   -0.88{col 48}{space 3}0.377{col 56}{space 4}-1137.923{col 69}{space 3} 430.6602
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  579.722{col 28}{space 2} 424.1875{col 39}{space 1}    1.37{col 48}{space 3}0.172{col 56}{space 4}-251.8393{col 69}{space 3} 1411.283
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 569.3762{col 28}{space 2}  485.177{col 39}{space 1}    1.17{col 48}{space 3}0.241{col 56}{space 4}-381.7467{col 69}{space 3} 1520.499
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2}  1.67706{col 28}{space 2} .8457142{col 39}{space 1}    1.98{col 48}{space 3}0.047{col 56}{space 4} .0191538{col 69}{space 3} 3.334967
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 3.792233{col 28}{space 2} .2623277{col 39}{space 1}   14.46{col 48}{space 3}0.000{col 56}{space 4} 3.277975{col 69}{space 3}  4.30649
+{txt}{space 3}resid3_mc25 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0375038{col 39}{space 1}   26.66{col 48}{space 3}0.000{col 56}{space 4}  .926479{col 69}{space 3} 1.073521
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-82.21157{col 28}{space 2} 18.83576{col 39}{space 1}   -4.36{col 48}{space 3}0.000{col 56}{space 4}-119.1365{col 69}{space 3}-45.28665
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/3).relspread1w ///
+>         logmarketcap1w logturnover1w if mc50==1, fe
+{txt}
+{com}. qui predict resid3_mc50, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).relspread1w logmarketcap1w ///
+>         logturnover1w resid3_mc50 if mc50==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    12,496
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,     12486){col 67}= {res}   1791.83
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2032387{col 28}{space 2}  .010297{col 39}{space 1}   19.74{col 48}{space 3}0.000{col 56}{space 4} .1830549{col 69}{space 3} .2234225
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1868573{col 28}{space 2}   .01071{col 39}{space 1}   17.45{col 48}{space 3}0.000{col 56}{space 4} .1658641{col 69}{space 3} .2078505
+{txt}{space 14} {c |}
+{space 3}relspread1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2}-459.8807{col 28}{space 2} 484.5686{col 39}{space 1}   -0.95{col 48}{space 3}0.343{col 56}{space 4} -1409.71{col 69}{space 3} 489.9483
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-254.6537{col 28}{space 2} 450.0512{col 39}{space 1}   -0.57{col 48}{space 3}0.572{col 56}{space 4}-1136.823{col 69}{space 3}  627.516
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-1103.011{col 28}{space 2} 562.1837{col 39}{space 1}   -1.96{col 48}{space 3}0.050{col 56}{space 4}-2204.978{col 69}{space 3}-1.044362
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-460.7781{col 28}{space 2} 480.3467{col 39}{space 1}   -0.96{col 48}{space 3}0.337{col 56}{space 4}-1402.332{col 69}{space 3} 480.7754
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2}-7.367154{col 28}{space 2} .5403571{col 39}{space 1}  -13.63{col 48}{space 3}0.000{col 56}{space 4}-8.426337{col 69}{space 3}-6.307971
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2}  5.81834{col 28}{space 2} .4066573{col 39}{space 1}   14.31{col 48}{space 3}0.000{col 56}{space 4} 5.021229{col 69}{space 3} 6.615451
+{txt}{space 3}resid3_mc50 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0266492{col 39}{space 1}   37.52{col 48}{space 3}0.000{col 56}{space 4} .9477635{col 69}{space 3} 1.052236
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 90.58763{col 28}{space 2} 10.27291{col 39}{space 1}    8.82{col 48}{space 3}0.000{col 56}{space 4} 70.45113{col 69}{space 3} 110.7241
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/3).relspread1w ///
+>         logmarketcap1w logturnover1w if mc75==1, fe
+{txt}
+{com}. qui predict resid3_mc75, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).relspread1w logmarketcap1w ///
+>         logturnover1w resid3_mc75 if mc75==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     6,248
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,      6238){col 67}= {res}    814.45
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2867926{col 28}{space 2} .0147909{col 39}{space 1}   19.39{col 48}{space 3}0.000{col 56}{space 4} .2577974{col 69}{space 3} .3157877
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1917041{col 28}{space 2} .0154662{col 39}{space 1}   12.40{col 48}{space 3}0.000{col 56}{space 4}  .161385{col 69}{space 3} .2220233
+{txt}{space 14} {c |}
+{space 3}relspread1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 32.61915{col 28}{space 2} 240.2769{col 39}{space 1}    0.14{col 48}{space 3}0.892{col 56}{space 4}-438.4063{col 69}{space 3} 503.6446
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 32.88345{col 28}{space 2} 224.0972{col 39}{space 1}    0.15{col 48}{space 3}0.883{col 56}{space 4}-406.4242{col 69}{space 3} 472.1911
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-188.5224{col 28}{space 2} 144.4238{col 39}{space 1}   -1.31{col 48}{space 3}0.192{col 56}{space 4}-471.6427{col 69}{space 3} 94.59793
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 243.3696{col 28}{space 2} 320.8273{col 39}{space 1}    0.76{col 48}{space 3}0.448{col 56}{space 4}-385.5625{col 69}{space 3} 872.3017
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2}-9.364824{col 28}{space 2} .5379821{col 39}{space 1}  -17.41{col 48}{space 3}0.000{col 56}{space 4}-10.41945{col 69}{space 3}-8.310194
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 8.972248{col 28}{space 2}  .605725{col 39}{space 1}   14.81{col 48}{space 3}0.000{col 56}{space 4} 7.784819{col 69}{space 3} 10.15968
+{txt}{space 3}resid3_mc75 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0469448{col 39}{space 1}   21.30{col 48}{space 3}0.000{col 56}{space 4}  .907972{col 69}{space 3} 1.092028
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 86.66295{col 28}{space 2} 10.41347{col 39}{space 1}    8.32{col 48}{space 3}0.000{col 56}{space 4} 66.24896{col 69}{space 3} 107.0769
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. ** ----------------------------- MODEL 4 -----------------------------
+. qui xtreg interest_index L(1/2).interest_index L(0/4).log_illiq_1w ///
+>         logmarketcap1w logturnover1w if mc25==1, fe
+{txt}
+{com}. qui predict resid4_mc25, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/4).log_illiq_1w ///
+>         logmarketcap1w logturnover1w resid4_mc25 if mc25==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     5,943
+{txt}Maximum lag = {res}5{col 49}{txt}F( 10,      5932){col 67}= {res}    255.64
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .1453342{col 28}{space 2} .0147068{col 39}{space 1}    9.88{col 48}{space 3}0.000{col 56}{space 4} .1165034{col 69}{space 3} .1741649
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1205069{col 28}{space 2}  .014467{col 39}{space 1}    8.33{col 48}{space 3}0.000{col 56}{space 4} .0921462{col 69}{space 3} .1488675
+{txt}{space 14} {c |}
+{space 2}log_illiq_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 1.459182{col 28}{space 2} .4922527{col 39}{space 1}    2.96{col 48}{space 3}0.003{col 56}{space 4} .4941872{col 69}{space 3} 2.424176
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} .0578075{col 28}{space 2} .4762253{col 39}{space 1}    0.12{col 48}{space 3}0.903{col 56}{space 4}-.8757675{col 69}{space 3} .9913824
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .6359943{col 28}{space 2} .4521774{col 39}{space 1}    1.41{col 48}{space 3}0.160{col 56}{space 4}-.2504381{col 69}{space 3} 1.522427
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 1.480353{col 28}{space 2} .4839661{col 39}{space 1}    3.06{col 48}{space 3}0.002{col 56}{space 4} .5316032{col 69}{space 3} 2.429102
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} .4324561{col 28}{space 2} .4389247{col 39}{space 1}    0.99{col 48}{space 3}0.325{col 56}{space 4} -.427996{col 69}{space 3} 1.292908
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2} 2.747693{col 28}{space 2} .7090424{col 39}{space 1}    3.88{col 48}{space 3}0.000{col 56}{space 4} 1.357712{col 69}{space 3} 4.137674
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 6.468036{col 28}{space 2} .5619765{col 39}{space 1}   11.51{col 48}{space 3}0.000{col 56}{space 4} 5.366358{col 69}{space 3} 7.569715
+{txt}{space 3}resid4_mc25 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0389183{col 39}{space 1}   25.69{col 48}{space 3}0.000{col 56}{space 4} .9237059{col 69}{space 3} 1.076294
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-62.39527{col 28}{space 2} 15.50779{col 39}{space 1}   -4.02{col 48}{space 3}0.000{col 56}{space 4}-92.79618{col 69}{space 3}-31.99436
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/4).log_illiq_1w ///
+>         logmarketcap1w logturnover1w if mc50==1, fe
+{txt}
+{com}. qui predict resid4_mc50, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/4).log_illiq_1w ///
+>         logmarketcap1w logturnover1w resid4_mc50 if mc50==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    12,452
+{txt}Maximum lag = {res}5{col 49}{txt}F( 10,     12441){col 67}= {res}   1545.93
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2026105{col 28}{space 2} .0102601{col 39}{space 1}   19.75{col 48}{space 3}0.000{col 56}{space 4} .1824992{col 69}{space 3} .2227219
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1856783{col 28}{space 2} .0106909{col 39}{space 1}   17.37{col 48}{space 3}0.000{col 56}{space 4} .1647224{col 69}{space 3} .2066341
+{txt}{space 14} {c |}
+{space 2}log_illiq_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} .7172151{col 28}{space 2} .3101852{col 39}{space 1}    2.31{col 48}{space 3}0.021{col 56}{space 4} .1092041{col 69}{space 3} 1.325226
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} .2786164{col 28}{space 2} .3054363{col 39}{space 1}    0.91{col 48}{space 3}0.362{col 56}{space 4} -.320086{col 69}{space 3} .8773188
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .3734377{col 28}{space 2} .3266356{col 39}{space 1}    1.14{col 48}{space 3}0.253{col 56}{space 4}-.2668186{col 69}{space 3} 1.013694
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}  .509329{col 28}{space 2}  .310467{col 39}{space 1}    1.64{col 48}{space 3}0.101{col 56}{space 4}-.0992343{col 69}{space 3} 1.117892
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} .4834339{col 28}{space 2} .2979635{col 39}{space 1}    1.62{col 48}{space 3}0.105{col 56}{space 4}-.1006206{col 69}{space 3} 1.067488
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2} -5.71817{col 28}{space 2} .5255679{col 39}{space 1}  -10.88{col 48}{space 3}0.000{col 56}{space 4}-6.748364{col 69}{space 3}-4.687976
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 6.452503{col 28}{space 2} .4683787{col 39}{space 1}   13.78{col 48}{space 3}0.000{col 56}{space 4} 5.534409{col 69}{space 3} 7.370598
+{txt}{space 3}resid4_mc50 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0274702{col 39}{space 1}   36.40{col 48}{space 3}0.000{col 56}{space 4} .9461541{col 69}{space 3} 1.053846
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}   91.864{col 28}{space 2} 9.340505{col 39}{space 1}    9.84{col 48}{space 3}0.000{col 56}{space 4} 73.55517{col 69}{space 3} 110.1728
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/4).log_illiq_1w ///
+>         logmarketcap1w logturnover1w if mc75==1, fe
+{txt}
+{com}. qui predict resid4_mc75, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/4).log_illiq_1w ///
+>         logmarketcap1w logturnover1w resid4_mc75 if mc75==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     6,226
+{txt}Maximum lag = {res}5{col 49}{txt}F( 10,      6215){col 67}= {res}    746.20
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2879914{col 28}{space 2} .0148051{col 39}{space 1}   19.45{col 48}{space 3}0.000{col 56}{space 4} .2589682{col 69}{space 3} .3170146
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1933019{col 28}{space 2} .0155529{col 39}{space 1}   12.43{col 48}{space 3}0.000{col 56}{space 4} .1628127{col 69}{space 3}  .223791
+{txt}{space 14} {c |}
+{space 2}log_illiq_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 1.062208{col 28}{space 2} .3982107{col 39}{space 1}    2.67{col 48}{space 3}0.008{col 56}{space 4} .2815775{col 69}{space 3} 1.842839
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-.0626882{col 28}{space 2} .4073206{col 39}{space 1}   -0.15{col 48}{space 3}0.878{col 56}{space 4}-.8611774{col 69}{space 3} .7358011
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .0479773{col 28}{space 2} .4063905{col 39}{space 1}    0.12{col 48}{space 3}0.906{col 56}{space 4}-.7486886{col 69}{space 3} .8446432
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-.1282069{col 28}{space 2} .3870216{col 39}{space 1}   -0.33{col 48}{space 3}0.740{col 56}{space 4} -.886903{col 69}{space 3} .6304891
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} .5769316{col 28}{space 2}   .39515{col 39}{space 1}    1.46{col 48}{space 3}0.144{col 56}{space 4}-.1976991{col 69}{space 3} 1.351562
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2}-8.248875{col 28}{space 2} .6023654{col 39}{space 1}  -13.69{col 48}{space 3}0.000{col 56}{space 4} -9.42972{col 69}{space 3}-7.068031
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 9.614067{col 28}{space 2}  .649233{col 39}{space 1}   14.81{col 48}{space 3}0.000{col 56}{space 4} 8.341345{col 69}{space 3} 10.88679
+{txt}{space 3}resid4_mc75 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0469679{col 39}{space 1}   21.29{col 48}{space 3}0.000{col 56}{space 4} .9079268{col 69}{space 3} 1.092073
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 82.01828{col 28}{space 2}   10.126{col 39}{space 1}    8.10{col 48}{space 3}0.000{col 56}{space 4} 62.16782{col 69}{space 3} 101.8687
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. ** ----------------------------- MODEL 5 -----------------------------
+. qui xtreg interest_index L(1/2).interest_index L(0/2).ret1d_1w logturnover1w ///
+>         spread1w logmarketcap1w if mc25==1, fe
+{txt}
+{com}. qui predict resid5_mc25, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/2).ret1d_1w logturnover1w ///
+>         spread1w logmarketcap1w resid5_mc25 if mc25==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     5,985
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,      5975){col 67}= {res}    282.87
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .1497288{col 28}{space 2}  .014579{col 39}{space 1}   10.27{col 48}{space 3}0.000{col 56}{space 4} .1211487{col 69}{space 3} .1783089
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  .119641{col 28}{space 2} .0145079{col 39}{space 1}    8.25{col 48}{space 3}0.000{col 56}{space 4} .0912002{col 69}{space 3} .1480818
+{txt}{space 14} {c |}
+{space 6}ret1d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 24.74899{col 28}{space 2} 26.57844{col 39}{space 1}    0.93{col 48}{space 3}0.352{col 56}{space 4}-27.35434{col 69}{space 3} 76.85233
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 26.44319{col 28}{space 2} 22.35522{col 39}{space 1}    1.18{col 48}{space 3}0.237{col 56}{space 4}-17.38112{col 69}{space 3}  70.2675
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} 25.63765{col 28}{space 2} 22.37003{col 39}{space 1}    1.15{col 48}{space 3}0.252{col 56}{space 4}-18.21569{col 69}{space 3}   69.491
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 3.840587{col 28}{space 2} .3174422{col 39}{space 1}   12.10{col 48}{space 3}0.000{col 56}{space 4} 3.218285{col 69}{space 3} 4.462888
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} .7788696{col 28}{space 2} .8049454{col 39}{space 1}    0.97{col 48}{space 3}0.333{col 56}{space 4}-.7991141{col 69}{space 3} 2.356853
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2} 1.068652{col 28}{space 2} .6795153{col 39}{space 1}    1.57{col 48}{space 3}0.116{col 56}{space 4}-.2634431{col 69}{space 3} 2.400748
+{txt}{space 3}resid5_mc25 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0377665{col 39}{space 1}   26.48{col 48}{space 3}0.000{col 56}{space 4} .9259641{col 69}{space 3} 1.074036
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-68.96685{col 28}{space 2} 15.09245{col 39}{space 1}   -4.57{col 48}{space 3}0.000{col 56}{space 4}-98.55349{col 69}{space 3} -39.3802
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/2).ret1d_1w logturnover1w ///
+>         spread1w logmarketcap1w if mc50==1, fe
+{txt}
+{com}. qui predict resid5_mc50, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/2).ret1d_1w logturnover1w ///
+>         spread1w logmarketcap1w resid5_mc50 if mc50==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    12,540
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,     12530){col 67}= {res}   1797.62
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2}  .203244{col 28}{space 2} .0103377{col 39}{space 1}   19.66{col 48}{space 3}0.000{col 56}{space 4} .1829805{col 69}{space 3} .2235075
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1855405{col 28}{space 2} .0106983{col 39}{space 1}   17.34{col 48}{space 3}0.000{col 56}{space 4} .1645701{col 69}{space 3} .2065109
+{txt}{space 14} {c |}
+{space 6}ret1d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 63.67204{col 28}{space 2} 18.87357{col 39}{space 1}    3.37{col 48}{space 3}0.001{col 56}{space 4} 26.67694{col 69}{space 3} 100.6671
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 26.31239{col 28}{space 2} 17.97955{col 39}{space 1}    1.46{col 48}{space 3}0.143{col 56}{space 4}-8.930286{col 69}{space 3} 61.55507
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  31.8878{col 28}{space 2} 16.30199{col 39}{space 1}    1.96{col 48}{space 3}0.050{col 56}{space 4} -.066597{col 69}{space 3}  63.8422
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 5.822779{col 28}{space 2} .4072106{col 39}{space 1}   14.30{col 48}{space 3}0.000{col 56}{space 4} 5.024584{col 69}{space 3} 6.620974
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 2.619887{col 28}{space 2} 10.28471{col 39}{space 1}    0.25{col 48}{space 3}0.799{col 56}{space 4}-17.53973{col 69}{space 3}  22.7795
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-7.108477{col 28}{space 2}  .516674{col 39}{space 1}  -13.76{col 48}{space 3}0.000{col 56}{space 4}-8.121237{col 69}{space 3}-6.095717
+{txt}{space 3}resid5_mc50 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0269961{col 39}{space 1}   37.04{col 48}{space 3}0.000{col 56}{space 4} .9470835{col 69}{space 3} 1.052916
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 83.09477{col 28}{space 2} 9.436678{col 39}{space 1}    8.81{col 48}{space 3}0.000{col 56}{space 4} 64.59744{col 69}{space 3} 101.5921
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/2).ret1d_1w logturnover1w ///
+>         spread1w logmarketcap1w if mc75==1, fe
+{txt}
+{com}. qui predict resid5_mc75, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/2).ret1d_1w logturnover1w ///
+>         spread1w logmarketcap1w resid5_mc75 if mc75==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     6,270
+{txt}Maximum lag = {res}5{col 49}{txt}F(  9,      6260){col 67}= {res}    822.01
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2875722{col 28}{space 2} .0147051{col 39}{space 1}   19.56{col 48}{space 3}0.000{col 56}{space 4} .2587452{col 69}{space 3} .3163992
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1903233{col 28}{space 2} .0154418{col 39}{space 1}   12.33{col 48}{space 3}0.000{col 56}{space 4} .1600521{col 69}{space 3} .2205945
+{txt}{space 14} {c |}
+{space 6}ret1d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 83.87092{col 28}{space 2} 27.92925{col 39}{space 1}    3.00{col 48}{space 3}0.003{col 56}{space 4} 29.12001{col 69}{space 3} 138.6218
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 14.49527{col 28}{space 2} 26.12692{col 39}{space 1}    0.55{col 48}{space 3}0.579{col 56}{space 4}-36.72247{col 69}{space 3}   65.713
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} 10.71516{col 28}{space 2} 24.98857{col 39}{space 1}    0.43{col 48}{space 3}0.668{col 56}{space 4}  -38.271{col 69}{space 3} 59.70132
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 9.166476{col 28}{space 2} .6127611{col 39}{space 1}   14.96{col 48}{space 3}0.000{col 56}{space 4} 7.965254{col 69}{space 3}  10.3677
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2}-32.99846{col 28}{space 2} 23.77462{col 39}{space 1}   -1.39{col 48}{space 3}0.165{col 56}{space 4}-79.60486{col 69}{space 3} 13.60794
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-9.420887{col 28}{space 2} .5326941{col 39}{space 1}  -17.69{col 48}{space 3}0.000{col 56}{space 4}-10.46515{col 69}{space 3}-8.376623
+{txt}{space 3}resid5_mc75 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0469156{col 39}{space 1}   21.31{col 48}{space 3}0.000{col 56}{space 4} .9080293{col 69}{space 3} 1.091971
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 84.83052{col 28}{space 2} 10.12098{col 39}{space 1}    8.38{col 48}{space 3}0.000{col 56}{space 4} 64.98992{col 69}{space 3} 104.6711
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. ** ----------------------------- MODEL 6 -----------------------------
+. qui xtreg interest_index L(1/2).interest_index L(0/4).ret5d_1w logturnover1w ///
+>         spread1w logmarketcap1w if mc25==1, fe
+{txt}
+{com}. qui predict resid6_mc25, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/4).ret5d_1w logturnover1w ///
+>         spread1w logmarketcap1w resid6_mc25 if mc25==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     5,922
+{txt}Maximum lag = {res}5{col 49}{txt}F( 11,      5910){col 67}= {res}    229.66
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .1497425{col 28}{space 2} .0147311{col 39}{space 1}   10.17{col 48}{space 3}0.000{col 56}{space 4} .1208641{col 69}{space 3}  .178621
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1219037{col 28}{space 2} .0145666{col 39}{space 1}    8.37{col 48}{space 3}0.000{col 56}{space 4} .0933479{col 69}{space 3} .1504596
+{txt}{space 14} {c |}
+{space 6}ret5d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2}  8.98051{col 28}{space 2} 6.656188{col 39}{space 1}    1.35{col 48}{space 3}0.177{col 56}{space 4} -4.06805{col 69}{space 3} 22.02907
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 6.966528{col 28}{space 2} 5.848858{col 39}{space 1}    1.19{col 48}{space 3}0.234{col 56}{space 4}-4.499372{col 69}{space 3} 18.43243
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} 1.772105{col 28}{space 2} 5.525851{col 39}{space 1}    0.32{col 48}{space 3}0.748{col 56}{space 4}-9.060582{col 69}{space 3} 12.60479
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} .3211791{col 28}{space 2} 5.418297{col 39}{space 1}    0.06{col 48}{space 3}0.953{col 56}{space 4}-10.30066{col 69}{space 3} 10.94302
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} 1.829937{col 28}{space 2} 6.156668{col 39}{space 1}    0.30{col 48}{space 3}0.766{col 56}{space 4}-10.23938{col 69}{space 3} 13.89926
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 3.971803{col 28}{space 2} .3212948{col 39}{space 1}   12.36{col 48}{space 3}0.000{col 56}{space 4} 3.341948{col 69}{space 3} 4.601658
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} .8436831{col 28}{space 2} .8016226{col 39}{space 1}    1.05{col 48}{space 3}0.293{col 56}{space 4}-.7277901{col 69}{space 3} 2.415156
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2} 1.051038{col 28}{space 2} .6819086{col 39}{space 1}    1.54{col 48}{space 3}0.123{col 56}{space 4}-.2857525{col 69}{space 3} 2.387828
+{txt}{space 3}resid6_mc25 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0380483{col 39}{space 1}   26.28{col 48}{space 3}0.000{col 56}{space 4} .9254115{col 69}{space 3} 1.074589
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-70.87646{col 28}{space 2} 15.15069{col 39}{space 1}   -4.68{col 48}{space 3}0.000{col 56}{space 4}-100.5773{col 69}{space 3}-41.17558
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/4).ret5d_1w logturnover1w ///
+>         spread1w logmarketcap1w if mc50==1, fe
+{txt}
+{com}. qui predict resid6_mc50, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/4).ret5d_1w logturnover1w ///
+>         spread1w logmarketcap1w resid6_mc50 if mc50==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    12,408
+{txt}Maximum lag = {res}5{col 49}{txt}F( 11,     12396){col 67}= {res}   1460.93
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2}  .204794{col 28}{space 2} .0104306{col 39}{space 1}   19.63{col 48}{space 3}0.000{col 56}{space 4} .1843484{col 69}{space 3} .2252397
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1847288{col 28}{space 2} .0107535{col 39}{space 1}   17.18{col 48}{space 3}0.000{col 56}{space 4} .1636504{col 69}{space 3} .2058073
+{txt}{space 14} {c |}
+{space 6}ret5d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 20.41219{col 28}{space 2} 5.333652{col 39}{space 1}    3.83{col 48}{space 3}0.000{col 56}{space 4} 9.957401{col 69}{space 3} 30.86697
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} .6296373{col 28}{space 2} 4.250079{col 39}{space 1}    0.15{col 48}{space 3}0.882{col 56}{space 4}-7.701177{col 69}{space 3} 8.960452
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} 11.17957{col 28}{space 2} 4.400817{col 39}{space 1}    2.54{col 48}{space 3}0.011{col 56}{space 4}  2.55329{col 69}{space 3} 19.80586
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} -2.27918{col 28}{space 2} 4.744155{col 39}{space 1}   -0.48{col 48}{space 3}0.631{col 56}{space 4}-11.57846{col 69}{space 3}   7.0201
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} 6.465693{col 28}{space 2}  4.05967{col 39}{space 1}    1.59{col 48}{space 3}0.111{col 56}{space 4} -1.49189{col 69}{space 3} 14.42328
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 5.847663{col 28}{space 2} .4110265{col 39}{space 1}   14.23{col 48}{space 3}0.000{col 56}{space 4} 5.041988{col 69}{space 3} 6.653339
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 3.329227{col 28}{space 2} 10.31579{col 39}{space 1}    0.32{col 48}{space 3}0.747{col 56}{space 4}-16.89132{col 69}{space 3} 23.54978
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-7.380798{col 28}{space 2} .5278075{col 39}{space 1}  -13.98{col 48}{space 3}0.000{col 56}{space 4}-8.415383{col 69}{space 3}-6.346213
+{txt}{space 3}resid6_mc50 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0271898{col 39}{space 1}   36.78{col 48}{space 3}0.000{col 56}{space 4} .9467038{col 69}{space 3} 1.053296
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 88.88629{col 28}{space 2} 9.643791{col 39}{space 1}    9.22{col 48}{space 3}0.000{col 56}{space 4} 69.98296{col 69}{space 3} 107.7896
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/4).ret5d_1w logturnover1w ///
+>         spread1w logmarketcap1w if mc75==1, fe
+{txt}
+{com}. qui predict resid6_mc75, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/4).ret5d_1w logturnover1w ///
+>         spread1w logmarketcap1w resid6_mc75 if mc75==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     6,204
+{txt}Maximum lag = {res}5{col 49}{txt}F( 11,      6192){col 67}= {res}    695.65
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2918773{col 28}{space 2} .0147744{col 39}{space 1}   19.76{col 48}{space 3}0.000{col 56}{space 4} .2629144{col 69}{space 3} .3208402
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1895949{col 28}{space 2} .0156049{col 39}{space 1}   12.15{col 48}{space 3}0.000{col 56}{space 4} .1590038{col 69}{space 3}  .220186
+{txt}{space 14} {c |}
+{space 6}ret5d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 27.97868{col 28}{space 2}  7.50934{col 39}{space 1}    3.73{col 48}{space 3}0.000{col 56}{space 4} 13.25777{col 69}{space 3}  42.6996
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-10.41965{col 28}{space 2} 6.262031{col 39}{space 1}   -1.66{col 48}{space 3}0.096{col 56}{space 4} -22.6954{col 69}{space 3}  1.85611
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} 7.192845{col 28}{space 2} 6.566816{col 39}{space 1}    1.10{col 48}{space 3}0.273{col 56}{space 4}-5.680394{col 69}{space 3} 20.06608
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 17.42267{col 28}{space 2} 6.238737{col 39}{space 1}    2.79{col 48}{space 3}0.005{col 56}{space 4} 5.192576{col 69}{space 3} 29.65276
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2}  -4.6227{col 28}{space 2} 6.583098{col 39}{space 1}   -0.70{col 48}{space 3}0.483{col 56}{space 4}-17.52786{col 69}{space 3} 8.282457
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 9.289218{col 28}{space 2} .6123977{col 39}{space 1}   15.17{col 48}{space 3}0.000{col 56}{space 4} 8.088706{col 69}{space 3} 10.48973
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2}-33.44998{col 28}{space 2} 23.82248{col 39}{space 1}   -1.40{col 48}{space 3}0.160{col 56}{space 4} -80.1503{col 69}{space 3} 13.25035
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}-9.801172{col 28}{space 2}   .53817{col 39}{space 1}  -18.21{col 48}{space 3}0.000{col 56}{space 4}-10.85617{col 69}{space 3}-8.746172
+{txt}{space 3}resid6_mc75 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0471123{col 39}{space 1}   21.23{col 48}{space 3}0.000{col 56}{space 4} .9076436{col 69}{space 3} 1.092356
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 91.77596{col 28}{space 2} 10.19887{col 39}{space 1}    9.00{col 48}{space 3}0.000{col 56}{space 4} 71.78265{col 69}{space 3} 111.7693
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. ** ----------------------------- MODEL 7 -----------------------------
+. qui xtreg interest_index L(1/2).interest_index L(0/3).logvolume1w ///
+>         logturnover1w spread1w logmarketcap1w if mc25==1, fe
+{txt}
+{com}. qui predict resid7_mc25, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).logvolume1w logturnover1w ///
+>         spread1w logmarketcap1w resid7_mc25 if mc25==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     5,964
+{txt}Maximum lag = {res}5{col 49}{txt}F( 10,      5953){col 67}= {res}    275.58
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .1450674{col 28}{space 2} .0148446{col 39}{space 1}    9.77{col 48}{space 3}0.000{col 56}{space 4} .1159665{col 69}{space 3} .1741683
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  .120993{col 28}{space 2} .0146825{col 39}{space 1}    8.24{col 48}{space 3}0.000{col 56}{space 4} .0922099{col 69}{space 3}  .149776
+{txt}{space 14} {c |}
+{space 3}logvolume1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 4.500663{col 28}{space 2} .8493665{col 39}{space 1}    5.30{col 48}{space 3}0.000{col 56}{space 4} 2.835597{col 69}{space 3} 6.165729
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}  1.25814{col 28}{space 2} .8789031{col 39}{space 1}    1.43{col 48}{space 3}0.152{col 56}{space 4}-.4648283{col 69}{space 3} 2.981109
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-.9755106{col 28}{space 2}  .854408{col 39}{space 1}   -1.14{col 48}{space 3}0.254{col 56}{space 4} -2.65046{col 69}{space 3} .6994388
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-.4075633{col 28}{space 2} .7541745{col 39}{space 1}   -0.54{col 48}{space 3}0.589{col 56}{space 4}-1.886019{col 69}{space 3} 1.070892
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} 1.118227{col 28}{space 2} .2905167{col 39}{space 1}    3.85{col 48}{space 3}0.000{col 56}{space 4} .5487093{col 69}{space 3} 1.687745
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 1.111257{col 28}{space 2} .8652667{col 39}{space 1}    1.28{col 48}{space 3}0.199{col 56}{space 4}-.5849792{col 69}{space 3} 2.807494
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2} 1.801855{col 28}{space 2} .7186496{col 39}{space 1}    2.51{col 48}{space 3}0.012{col 56}{space 4} .3930413{col 69}{space 3} 3.210669
+{txt}{space 3}resid7_mc25 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0402263{col 39}{space 1}   24.86{col 48}{space 3}0.000{col 56}{space 4} .9211419{col 69}{space 3} 1.078858
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} -103.226{col 28}{space 2} 16.44961{col 39}{space 1}   -6.28{col 48}{space 3}0.000{col 56}{space 4}-135.4732{col 69}{space 3}-70.97879
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/3).logvolume1w ///
+>         logturnover1w spread1w logmarketcap1w if mc50==1, fe
+{txt}
+{com}. qui predict resid7_mc50, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).logvolume1w logturnover1w ///
+>         spread1w logmarketcap1w resid7_mc50 if mc50==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    12,496
+{txt}Maximum lag = {res}5{col 49}{txt}F( 10,     12485){col 67}= {res}   1609.03
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2012248{col 28}{space 2} .0104191{col 39}{space 1}   19.31{col 48}{space 3}0.000{col 56}{space 4} .1808018{col 69}{space 3} .2216479
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1866338{col 28}{space 2} .0109413{col 39}{space 1}   17.06{col 48}{space 3}0.000{col 56}{space 4} .1651872{col 69}{space 3} .2080805
+{txt}{space 14} {c |}
+{space 3}logvolume1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 14.26357{col 28}{space 2} .6747033{col 39}{space 1}   21.14{col 48}{space 3}0.000{col 56}{space 4} 12.94105{col 69}{space 3} 15.58609
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} -.186651{col 28}{space 2} .5749367{col 39}{space 1}   -0.32{col 48}{space 3}0.745{col 56}{space 4}-1.313616{col 69}{space 3} .9403136
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} -1.58327{col 28}{space 2} .5924967{col 39}{space 1}   -2.67{col 48}{space 3}0.008{col 56}{space 4}-2.744655{col 69}{space 3}-.4218855
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}  .032982{col 28}{space 2} .4942323{col 39}{space 1}    0.07{col 48}{space 3}0.947{col 56}{space 4}-.9357895{col 69}{space 3} 1.001753
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} -7.86162{col 28}{space 2}  .545277{col 39}{space 1}  -14.42{col 48}{space 3}0.000{col 56}{space 4}-8.930447{col 69}{space 3}-6.792793
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 14.36468{col 28}{space 2} 12.29253{col 39}{space 1}    1.17{col 48}{space 3}0.243{col 56}{space 4}-9.730565{col 69}{space 3} 38.45993
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}  5.30873{col 28}{space 2} .5109968{col 39}{space 1}   10.39{col 48}{space 3}0.000{col 56}{space 4} 4.307097{col 69}{space 3} 6.310362
+{txt}{space 3}resid7_mc50 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0279428{col 39}{space 1}   35.79{col 48}{space 3}0.000{col 56}{space 4} .9452277{col 69}{space 3} 1.054772
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} -152.617{col 28}{space 2} 9.620893{col 39}{space 1}  -15.86{col 48}{space 3}0.000{col 56}{space 4}-171.4754{col 69}{space 3}-133.7586
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/3).logvolume1w ///
+>         logturnover1w spread1w logmarketcap1w if mc75==1, fe
+{txt}
+{com}. qui predict resid7_mc75, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).logvolume1w logturnover1w ///
+>         spread1w logmarketcap1w resid7_mc75 if mc75==1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}     6,248
+{txt}Maximum lag = {res}5{col 49}{txt}F( 10,      6237){col 67}= {res}    750.60
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2804622{col 28}{space 2} .0154385{col 39}{space 1}   18.17{col 48}{space 3}0.000{col 56}{space 4} .2501975{col 69}{space 3}  .310727
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1928498{col 28}{space 2} .0161578{col 39}{space 1}   11.94{col 48}{space 3}0.000{col 56}{space 4}  .161175{col 69}{space 3} .2245246
+{txt}{space 14} {c |}
+{space 3}logvolume1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 29.40807{col 28}{space 2} 1.416505{col 39}{space 1}   20.76{col 48}{space 3}0.000{col 56}{space 4} 26.63123{col 69}{space 3} 32.18491
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} .3601912{col 28}{space 2} .8482512{col 39}{space 1}    0.42{col 48}{space 3}0.671{col 56}{space 4}-1.302673{col 69}{space 3} 2.023056
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-2.489302{col 28}{space 2} .9050221{col 39}{space 1}   -2.75{col 48}{space 3}0.006{col 56}{space 4}-4.263457{col 69}{space 3}-.7151469
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-.8913679{col 28}{space 2} .8047605{col 39}{space 1}   -1.11{col 48}{space 3}0.268{col 56}{space 4}-2.468976{col 69}{space 3} .6862399
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2}-19.08779{col 28}{space 2} 1.286775{col 39}{space 1}  -14.83{col 48}{space 3}0.000{col 56}{space 4}-21.61031{col 69}{space 3}-16.56527
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2}-20.84339{col 28}{space 2}  23.7844{col 39}{space 1}   -0.88{col 48}{space 3}0.381{col 56}{space 4}-67.46901{col 69}{space 3} 25.78222
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2} 16.09346{col 28}{space 2}  1.03812{col 39}{space 1}   15.50{col 48}{space 3}0.000{col 56}{space 4} 14.05838{col 69}{space 3} 18.12853
+{txt}{space 3}resid7_mc75 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0504104{col 39}{space 1}   19.84{col 48}{space 3}0.000{col 56}{space 4} .9011783{col 69}{space 3} 1.098822
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-443.1891{col 28}{space 2} 24.87015{col 39}{space 1}  -17.82{col 48}{space 3}0.000{col 56}{space 4}-491.9432{col 69}{space 3}-394.4351
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. // -------------------------------------------------------------------------- //
+. //                                              Combined (Variable) Models                                                        //
+. // -------------------------------------------------------------------------- //
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/3).vol_1w L(0/3).spread1w ///
+>         L(0/2).ret1d_1w L(0/4).ret5d_1w L(0/3).logvolume1w logturnover1w ///
+>         logmarketcap1w, fe
+{txt}
+{com}. qui predict comb_resid1, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).vol_1w L(0/3).spread1w ///
+>         L(0/2).ret1d_1w L(0/4).ret5d_1w L(0/3).logvolume1w logturnover1w ///
+>         logmarketcap1w comb_resid1, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,534
+{txt}Maximum lag = {res}5{col 49}{txt}F( 25,     24508){col 67}= {res}   1041.76
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2108776{col 28}{space 2} .0075821{col 39}{space 1}   27.81{col 48}{space 3}0.000{col 56}{space 4} .1960163{col 69}{space 3}  .225739
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1760894{col 28}{space 2} .0078302{col 39}{space 1}   22.49{col 48}{space 3}0.000{col 56}{space 4} .1607418{col 69}{space 3}  .191437
+{txt}{space 14} {c |}
+{space 8}vol_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 121.7839{col 28}{space 2} 12.51122{col 39}{space 1}    9.73{col 48}{space 3}0.000{col 56}{space 4} 97.26114{col 69}{space 3} 146.3066
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-4.606206{col 28}{space 2} 11.33172{col 39}{space 1}   -0.41{col 48}{space 3}0.684{col 56}{space 4}-26.81707{col 69}{space 3} 17.60466
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-35.86276{col 28}{space 2}  11.8206{col 39}{space 1}   -3.03{col 48}{space 3}0.002{col 56}{space 4}-59.03186{col 69}{space 3}-12.69366
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-2.033079{col 28}{space 2} 10.88599{col 39}{space 1}   -0.19{col 48}{space 3}0.852{col 56}{space 4}-23.37029{col 69}{space 3} 19.30413
+{txt}{space 14} {c |}
+{space 6}spread1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 2.124312{col 28}{space 2} 1.443875{col 39}{space 1}    1.47{col 48}{space 3}0.141{col 56}{space 4}-.7057721{col 69}{space 3} 4.954395
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-.9471507{col 28}{space 2} .9367199{col 39}{space 1}   -1.01{col 48}{space 3}0.312{col 56}{space 4}-2.783179{col 69}{space 3} .8888772
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-.6716822{col 28}{space 2} .9789592{col 39}{space 1}   -0.69{col 48}{space 3}0.493{col 56}{space 4}-2.590502{col 69}{space 3} 1.247137
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-.1663927{col 28}{space 2} 1.015397{col 39}{space 1}   -0.16{col 48}{space 3}0.870{col 56}{space 4}-2.156633{col 69}{space 3} 1.823848
+{txt}{space 14} {c |}
+{space 6}ret1d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2}-3.875144{col 28}{space 2} 25.67377{col 39}{space 1}   -0.15{col 48}{space 3}0.880{col 56}{space 4} -54.1973{col 69}{space 3} 46.44701
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-14.16092{col 28}{space 2} 36.34474{col 39}{space 1}   -0.39{col 48}{space 3}0.697{col 56}{space 4}-85.39882{col 69}{space 3} 57.07699
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} 16.40577{col 28}{space 2} 28.66399{col 39}{space 1}    0.57{col 48}{space 3}0.567{col 56}{space 4} -39.7774{col 69}{space 3} 72.58894
+{txt}{space 14} {c |}
+{space 6}ret5d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 22.16438{col 28}{space 2} 7.475202{col 39}{space 1}    2.97{col 48}{space 3}0.003{col 56}{space 4}  7.51253{col 69}{space 3} 36.81623
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}  7.35485{col 28}{space 2} 7.981514{col 39}{space 1}    0.92{col 48}{space 3}0.357{col 56}{space 4}-8.289403{col 69}{space 3}  22.9991
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} 8.168899{col 28}{space 2} 5.448692{col 39}{space 1}    1.50{col 48}{space 3}0.134{col 56}{space 4}-2.510868{col 69}{space 3} 18.84867
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 5.085427{col 28}{space 2} 3.270426{col 39}{space 1}    1.55{col 48}{space 3}0.120{col 56}{space 4}-1.324807{col 69}{space 3} 11.49566
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} 5.083044{col 28}{space 2}  3.06541{col 39}{space 1}    1.66{col 48}{space 3}0.097{col 56}{space 4}-.9253454{col 69}{space 3} 11.09143
+{txt}{space 14} {c |}
+{space 3}logvolume1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 6.646558{col 28}{space 2} .4536442{col 39}{space 1}   14.65{col 48}{space 3}0.000{col 56}{space 4} 5.757388{col 69}{space 3} 7.535729
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} .9860199{col 28}{space 2} .4608565{col 39}{space 1}    2.14{col 48}{space 3}0.032{col 56}{space 4} .0827131{col 69}{space 3} 1.889327
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} -.862759{col 28}{space 2} .4707379{col 39}{space 1}   -1.83{col 48}{space 3}0.067{col 56}{space 4}-1.785434{col 69}{space 3} .0599159
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-.4240422{col 28}{space 2} .4021771{col 39}{space 1}   -1.05{col 48}{space 3}0.292{col 56}{space 4}-1.212334{col 69}{space 3} .3642492
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2}-1.133717{col 28}{space 2} .2060592{col 39}{space 1}   -5.50{col 48}{space 3}0.000{col 56}{space 4}-1.537606{col 69}{space 3}-.7298289
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2}  .490231{col 28}{space 2} .1871567{col 39}{space 1}    2.62{col 48}{space 3}0.009{col 56}{space 4} .1233925{col 69}{space 3} .8570695
+{txt}{space 3}comb_resid1 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0213025{col 39}{space 1}   46.94{col 48}{space 3}0.000{col 56}{space 4} .9582459{col 69}{space 3} 1.041754
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} -68.4804{col 28}{space 2} 3.225722{col 39}{space 1}  -21.23{col 48}{space 3}0.000{col 56}{space 4}-74.80301{col 69}{space 3}-62.15779
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/3).vol_1w ///
+>         L(0/4).log_illiq_1w L(0/2).ret1d_1w L(0/4).ret5d_1w L(0/3).logvolume1w ///
+>         logturnover1w logmarketcap1w, fe
+{txt}
+{com}. qui predict comb_resid2, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/3).vol_1w L(0/4).log_illiq_1w ///
+>         L(0/2).ret1d_1w L(0/4).ret5d_1w L(0/3).logvolume1w logturnover1w ///
+>         logmarketcap1w comb_resid2, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,534
+{txt}Maximum lag = {res}5{col 49}{txt}F( 26,     24507){col 67}= {res}    998.90
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2105516{col 28}{space 2} .0075639{col 39}{space 1}   27.84{col 48}{space 3}0.000{col 56}{space 4} .1957259{col 69}{space 3} .2253773
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1759543{col 28}{space 2} .0078172{col 39}{space 1}   22.51{col 48}{space 3}0.000{col 56}{space 4} .1606321{col 69}{space 3} .1912766
+{txt}{space 14} {c |}
+{space 8}vol_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 125.7509{col 28}{space 2} 16.79969{col 39}{space 1}    7.49{col 48}{space 3}0.000{col 56}{space 4} 92.82253{col 69}{space 3} 158.6793
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} -8.42015{col 28}{space 2} 14.39513{col 39}{space 1}   -0.58{col 48}{space 3}0.559{col 56}{space 4}-36.63548{col 69}{space 3} 19.79518
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-53.08858{col 28}{space 2} 13.91176{col 39}{space 1}   -3.82{col 48}{space 3}0.000{col 56}{space 4}-80.35647{col 69}{space 3}-25.82069
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-19.60893{col 28}{space 2} 13.41176{col 39}{space 1}   -1.46{col 48}{space 3}0.144{col 56}{space 4}-45.89679{col 69}{space 3} 6.678942
+{txt}{space 14} {c |}
+{space 2}log_illiq_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} -.225157{col 28}{space 2} .2982196{col 39}{space 1}   -0.76{col 48}{space 3}0.450{col 56}{space 4}-.8096855{col 69}{space 3} .3593715
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} .0934048{col 28}{space 2} .2826664{col 39}{space 1}    0.33{col 48}{space 3}0.741{col 56}{space 4}-.4606386{col 69}{space 3} .6474482
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .5358166{col 28}{space 2} .2748485{col 39}{space 1}    1.95{col 48}{space 3}0.051{col 56}{space 4}-.0029032{col 69}{space 3} 1.074536
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} .5160756{col 28}{space 2} .2735581{col 39}{space 1}    1.89{col 48}{space 3}0.059{col 56}{space 4}-.0201148{col 69}{space 3} 1.052266
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} .1227336{col 28}{space 2} .2141223{col 39}{space 1}    0.57{col 48}{space 3}0.567{col 56}{space 4} -.296959{col 69}{space 3} .5424263
+{txt}{space 14} {c |}
+{space 6}ret1d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2}-2.646578{col 28}{space 2} 25.72644{col 39}{space 1}   -0.10{col 48}{space 3}0.918{col 56}{space 4}-53.07197{col 69}{space 3} 47.77882
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-13.34644{col 28}{space 2} 36.26639{col 39}{space 1}   -0.37{col 48}{space 3}0.713{col 56}{space 4}-84.43077{col 69}{space 3} 57.73789
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} 16.33425{col 28}{space 2} 28.63543{col 39}{space 1}    0.57{col 48}{space 3}0.568{col 56}{space 4}-39.79293{col 69}{space 3} 72.46143
+{txt}{space 14} {c |}
+{space 6}ret5d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 20.71048{col 28}{space 2} 7.537397{col 39}{space 1}    2.75{col 48}{space 3}0.006{col 56}{space 4} 5.936723{col 69}{space 3} 35.48424
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 6.306091{col 28}{space 2}  7.99325{col 39}{space 1}    0.79{col 48}{space 3}0.430{col 56}{space 4}-9.361164{col 69}{space 3} 21.97335
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} 7.691985{col 28}{space 2} 5.475951{col 39}{space 1}    1.40{col 48}{space 3}0.160{col 56}{space 4}-3.041211{col 69}{space 3} 18.42518
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 5.218782{col 28}{space 2} 3.276767{col 39}{space 1}    1.59{col 48}{space 3}0.111{col 56}{space 4}-1.203881{col 69}{space 3} 11.64144
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} 4.873492{col 28}{space 2} 3.057214{col 39}{space 1}    1.59{col 48}{space 3}0.111{col 56}{space 4}-1.118833{col 69}{space 3} 10.86582
+{txt}{space 14} {c |}
+{space 3}logvolume1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 5.479154{col 28}{space 2} .5925703{col 39}{space 1}    9.25{col 48}{space 3}0.000{col 56}{space 4}  4.31768{col 69}{space 3} 6.640627
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 1.109342{col 28}{space 2} .5177749{col 39}{space 1}    2.14{col 48}{space 3}0.032{col 56}{space 4} .0944716{col 69}{space 3} 2.124212
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-.3587425{col 28}{space 2} .5187582{col 39}{space 1}   -0.69{col 48}{space 3}0.489{col 56}{space 4} -1.37554{col 69}{space 3} .6580551
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} .0980292{col 28}{space 2} .4675808{col 39}{space 1}    0.21{col 48}{space 3}0.834{col 56}{space 4}-.8184576{col 69}{space 3} 1.014516
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2}-.0741771{col 28}{space 2} .5615655{col 39}{space 1}   -0.13{col 48}{space 3}0.895{col 56}{space 4} -1.17488{col 69}{space 3} 1.026526
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2} .4693998{col 28}{space 2} .1641287{col 39}{space 1}    2.86{col 48}{space 3}0.004{col 56}{space 4} .1476975{col 69}{space 3}  .791102
+{txt}{space 3}comb_resid2 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0212914{col 39}{space 1}   46.97{col 48}{space 3}0.000{col 56}{space 4} .9582676{col 69}{space 3} 1.041732
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-62.30728{col 28}{space 2} 4.124716{col 39}{space 1}  -15.11{col 48}{space 3}0.000{col 56}{space 4}-70.39197{col 69}{space 3}-54.22259
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/2).loghl_1w ///
+>         L(0/3).spread1w L(0/2).ret1d_1w L(0/4).ret5d_1w L(0/3).logvolume1w ///
+>         logturnover1w logmarketcap1w, fe
+{txt}
+{com}. qui predict comb_resid3, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/2).loghl_1w L(0/3).spread1w ///
+>         L(0/2).ret1d_1w L(0/4).ret5d_1w L(0/3).logvolume1w logturnover1w ///
+>         logmarketcap1w comb_resid3, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,534
+{txt}Maximum lag = {res}5{col 49}{txt}F( 24,     24509){col 67}= {res}   1083.14
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2112194{col 28}{space 2} .0075828{col 39}{space 1}   27.86{col 48}{space 3}0.000{col 56}{space 4} .1963567{col 69}{space 3} .2260822
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1754459{col 28}{space 2} .0078302{col 39}{space 1}   22.41{col 48}{space 3}0.000{col 56}{space 4} .1600983{col 69}{space 3} .1907935
+{txt}{space 14} {c |}
+{space 6}loghl_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 118.3787{col 28}{space 2} 19.03196{col 39}{space 1}    6.22{col 48}{space 3}0.000{col 56}{space 4} 81.07491{col 69}{space 3} 155.6825
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-52.01472{col 28}{space 2} 14.04939{col 39}{space 1}   -3.70{col 48}{space 3}0.000{col 56}{space 4}-79.55239{col 69}{space 3}-24.47705
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-6.014736{col 28}{space 2} 13.98065{col 39}{space 1}   -0.43{col 48}{space 3}0.667{col 56}{space 4}-33.41766{col 69}{space 3} 21.38819
+{txt}{space 14} {c |}
+{space 6}spread1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 2.104552{col 28}{space 2} 1.443509{col 39}{space 1}    1.46{col 48}{space 3}0.145{col 56}{space 4}-.7248126{col 69}{space 3} 4.933917
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-1.017207{col 28}{space 2} .9244764{col 39}{space 1}   -1.10{col 48}{space 3}0.271{col 56}{space 4}-2.829237{col 69}{space 3} .7948228
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-.6730106{col 28}{space 2} .9691802{col 39}{space 1}   -0.69{col 48}{space 3}0.487{col 56}{space 4}-2.572663{col 69}{space 3} 1.226641
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} -.140526{col 28}{space 2} 1.017519{col 39}{space 1}   -0.14{col 48}{space 3}0.890{col 56}{space 4}-2.134924{col 69}{space 3} 1.853872
+{txt}{space 14} {c |}
+{space 6}ret1d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2}-4.491324{col 28}{space 2} 25.95559{col 39}{space 1}   -0.17{col 48}{space 3}0.863{col 56}{space 4}-55.36587{col 69}{space 3} 46.38322
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-32.78425{col 28}{space 2}  36.4902{col 39}{space 1}   -0.90{col 48}{space 3}0.369{col 56}{space 4}-104.3073{col 69}{space 3} 38.73876
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-2.157936{col 28}{space 2} 28.44762{col 39}{space 1}   -0.08{col 48}{space 3}0.940{col 56}{space 4}  -57.917{col 69}{space 3} 53.60113
+{txt}{space 14} {c |}
+{space 6}ret5d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 27.34207{col 28}{space 2} 7.559569{col 39}{space 1}    3.62{col 48}{space 3}0.000{col 56}{space 4} 12.52486{col 69}{space 3} 42.15929
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 11.99268{col 28}{space 2} 8.066503{col 39}{space 1}    1.49{col 48}{space 3}0.137{col 56}{space 4}-3.818155{col 69}{space 3} 27.80352
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} 8.480988{col 28}{space 2}  5.44862{col 39}{space 1}    1.56{col 48}{space 3}0.120{col 56}{space 4}-2.198639{col 69}{space 3} 19.16062
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 4.004681{col 28}{space 2} 3.265173{col 39}{space 1}    1.23{col 48}{space 3}0.220{col 56}{space 4}-2.395257{col 69}{space 3} 10.40462
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} 4.683426{col 28}{space 2} 3.078319{col 39}{space 1}    1.52{col 48}{space 3}0.128{col 56}{space 4}-1.350266{col 69}{space 3} 10.71712
+{txt}{space 14} {c |}
+{space 3}logvolume1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 6.994184{col 28}{space 2} .4678739{col 39}{space 1}   14.95{col 48}{space 3}0.000{col 56}{space 4} 6.077123{col 69}{space 3} 7.911245
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 1.233404{col 28}{space 2} .4640634{col 39}{space 1}    2.66{col 48}{space 3}0.008{col 56}{space 4} .3238114{col 69}{space 3} 2.142996
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-1.425422{col 28}{space 2} .4688203{col 39}{space 1}   -3.04{col 48}{space 3}0.002{col 56}{space 4}-2.344338{col 69}{space 3}-.5065055
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-.4008208{col 28}{space 2} .3687881{col 39}{space 1}   -1.09{col 48}{space 3}0.277{col 56}{space 4}-1.123668{col 69}{space 3} .3220264
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2}-1.096582{col 28}{space 2} .2063767{col 39}{space 1}   -5.31{col 48}{space 3}0.000{col 56}{space 4}-1.501093{col 69}{space 3} -.692071
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2} .4670777{col 28}{space 2} .1887906{col 39}{space 1}    2.47{col 48}{space 3}0.013{col 56}{space 4} .0970367{col 69}{space 3} .8371187
+{txt}{space 3}comb_resid3 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0212956{col 39}{space 1}   46.96{col 48}{space 3}0.000{col 56}{space 4} .9582593{col 69}{space 3} 1.041741
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} -69.3914{col 28}{space 2} 3.270457{col 39}{space 1}  -21.22{col 48}{space 3}0.000{col 56}{space 4}-75.80169{col 69}{space 3}-62.98111
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. qui xtreg interest_index L(1/2).interest_index L(0/2).loghl_1w ///
+>         L(0/4).log_illiq_1w L(0/2).ret1d_1w L(0/4).ret5d_1w L(0/3).logvolume1w ///
+>         logturnover1w logmarketcap1w, fe
+{txt}
+{com}. qui predict comb_resid4, u
+{txt}
+{com}. newey interest_index L(1/2).interest_index L(0/2).loghl_1w ///
+>         L(0/4).log_illiq_1w L(0/2).ret1d_1w L(0/4).ret5d_1w L(0/3).logvolume1w ///
+>         logturnover1w logmarketcap1w comb_resid4, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,534
+{txt}Maximum lag = {res}5{col 49}{txt}F( 25,     24508){col 67}= {res}   1034.74
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2107645{col 28}{space 2} .0075649{col 39}{space 1}   27.86{col 48}{space 3}0.000{col 56}{space 4} .1959368{col 69}{space 3} .2255922
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1750561{col 28}{space 2} .0078187{col 39}{space 1}   22.39{col 48}{space 3}0.000{col 56}{space 4}  .159731{col 69}{space 3} .1903813
+{txt}{space 14} {c |}
+{space 6}loghl_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 101.1842{col 28}{space 2} 21.51851{col 39}{space 1}    4.70{col 48}{space 3}0.000{col 56}{space 4} 59.00661{col 69}{space 3} 143.3618
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-59.83845{col 28}{space 2}  14.8943{col 39}{space 1}   -4.02{col 48}{space 3}0.000{col 56}{space 4}-89.03218{col 69}{space 3}-30.64472
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-16.68949{col 28}{space 2}  14.5471{col 39}{space 1}   -1.15{col 48}{space 3}0.251{col 56}{space 4}-45.20268{col 69}{space 3}  11.8237
+{txt}{space 14} {c |}
+{space 2}log_illiq_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} .5527189{col 28}{space 2} .2689269{col 39}{space 1}    2.06{col 48}{space 3}0.040{col 56}{space 4} .0256059{col 69}{space 3} 1.079832
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} .2330723{col 28}{space 2} .2508786{col 39}{space 1}    0.93{col 48}{space 3}0.353{col 56}{space 4}-.2586651{col 69}{space 3} .7248097
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1079497{col 28}{space 2} .2493772{col 39}{space 1}    0.43{col 48}{space 3}0.665{col 56}{space 4}-.3808449{col 69}{space 3} .5967442
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} .3086853{col 28}{space 2} .2328862{col 39}{space 1}    1.33{col 48}{space 3}0.185{col 56}{space 4}-.1477858{col 69}{space 3} .7651565
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} .1277661{col 28}{space 2} .2163433{col 39}{space 1}    0.59{col 48}{space 3}0.555{col 56}{space 4}  -.29628{col 69}{space 3} .5518122
+{txt}{space 14} {c |}
+{space 6}ret1d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2}-7.480762{col 28}{space 2} 25.87303{col 39}{space 1}   -0.29{col 48}{space 3}0.772{col 56}{space 4}-58.19347{col 69}{space 3} 43.23195
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-37.38568{col 28}{space 2} 36.37475{col 39}{space 1}   -1.03{col 48}{space 3}0.304{col 56}{space 4}-108.6824{col 69}{space 3} 33.91104
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-4.757435{col 28}{space 2} 28.42102{col 39}{space 1}   -0.17{col 48}{space 3}0.867{col 56}{space 4}-60.46435{col 69}{space 3} 50.94948
+{txt}{space 14} {c |}
+{space 6}ret5d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 27.49271{col 28}{space 2} 7.547142{col 39}{space 1}    3.64{col 48}{space 3}0.000{col 56}{space 4} 12.69985{col 69}{space 3} 42.28557
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 12.09356{col 28}{space 2} 8.050139{col 39}{space 1}    1.50{col 48}{space 3}0.133{col 56}{space 4}  -3.6852{col 69}{space 3} 27.87232
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  7.73893{col 28}{space 2} 5.457037{col 39}{space 1}    1.42{col 48}{space 3}0.156{col 56}{space 4}-2.957195{col 69}{space 3} 18.43505
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 3.568775{col 28}{space 2} 3.289708{col 39}{space 1}    1.08{col 48}{space 3}0.278{col 56}{space 4}-2.879252{col 69}{space 3}  10.0168
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} 4.749115{col 28}{space 2} 3.065809{col 39}{space 1}    1.55{col 48}{space 3}0.121{col 56}{space 4}-1.260058{col 69}{space 3} 10.75829
+{txt}{space 14} {c |}
+{space 3}logvolume1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 6.168005{col 28}{space 2} .5472523{col 39}{space 1}   11.27{col 48}{space 3}0.000{col 56}{space 4} 5.095357{col 69}{space 3} 7.240653
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 1.539649{col 28}{space 2} .4908048{col 39}{space 1}    3.14{col 48}{space 3}0.002{col 56}{space 4} .5776415{col 69}{space 3} 2.501656
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-1.167258{col 28}{space 2} .4947059{col 39}{space 1}   -2.36{col 48}{space 3}0.018{col 56}{space 4}-2.136911{col 69}{space 3}-.1976041
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-.2119694{col 28}{space 2} .3885842{col 39}{space 1}   -0.55{col 48}{space 3}0.585{col 56}{space 4}-.9736179{col 69}{space 3} .5496792
+{txt}{space 14} {c |}
+{space 1}logturnover1w {c |}{col 16}{res}{space 2} .2281319{col 28}{space 2} .5013376{col 39}{space 1}    0.46{col 48}{space 3}0.649{col 56}{space 4}-.7545204{col 69}{space 3} 1.210784
+{txt}logmarketcap1w {c |}{col 16}{res}{space 2} .4382728{col 28}{space 2} .1659762{col 39}{space 1}    2.64{col 48}{space 3}0.008{col 56}{space 4} .1129493{col 69}{space 3} .7635963
+{txt}{space 3}comb_resid4 {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0212808{col 39}{space 1}   46.99{col 48}{space 3}0.000{col 56}{space 4} .9582883{col 69}{space 3} 1.041712
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-60.21718{col 28}{space 2} 4.140186{col 39}{space 1}  -14.54{col 48}{space 3}0.000{col 56}{space 4} -68.3322{col 69}{space 3}-52.10217
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. 
+. // -------------------------------------------------------------------------- //
+. //                                                      Robustness Checks                                                             //
+. // -------------------------------------------------------------------------- //
+. 
+. // Volatility:
+. 
+.         // Generate interaction terms:
+.         qui gen noisy_x_vol = noisy * vol_1w
+{txt}
+{com}. 
+.         qui xtreg interest_index L(1/2).interest_index L(0/3).vol_1w ///
+>                 L(0/3).noisy_x_vol logmarketcap1w spread1w logturnover1w, fe
+{txt}
+{com}.         qui predict resid1_rb, u
+{txt}
+{com}.         newey interest_index L(1/2).interest_index L(0/3).vol_1w ///
+>                 L(0/3).noisy_x_vol logmarketcap1w spread1w logturnover1w resid1_rb, ///
+>                 lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,708
+{txt}Maximum lag = {res}5{col 49}{txt}F( 14,     24693){col 67}= {res}   1848.22
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2148024{col 28}{space 2} .0075067{col 39}{space 1}   28.61{col 48}{space 3}0.000{col 56}{space 4} .2000889{col 69}{space 3} .2295159
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1799844{col 28}{space 2} .0077058{col 39}{space 1}   23.36{col 48}{space 3}0.000{col 56}{space 4} .1648806{col 69}{space 3} .1950883
+{txt}{space 14} {c |}
+{space 8}vol_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2}  125.708{col 28}{space 2} 16.80168{col 39}{space 1}    7.48{col 48}{space 3}0.000{col 56}{space 4} 92.77572{col 69}{space 3} 158.6403
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 8.598894{col 28}{space 2} 12.67392{col 39}{space 1}    0.68{col 48}{space 3}0.497{col 56}{space 4}-16.24275{col 69}{space 3} 33.44054
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-50.37325{col 28}{space 2} 13.89476{col 39}{space 1}   -3.63{col 48}{space 3}0.000{col 56}{space 4}-77.60782{col 69}{space 3}-23.13868
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}  -5.5533{col 28}{space 2} 12.95987{col 39}{space 1}   -0.43{col 48}{space 3}0.668{col 56}{space 4}-30.95543{col 69}{space 3} 19.84883
+{txt}{space 14} {c |}
+{space 3}noisy_x_vol {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 9.160219{col 28}{space 2} 22.48261{col 39}{space 1}    0.41{col 48}{space 3}0.684{col 56}{space 4}-34.90704{col 69}{space 3} 53.22748
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-.8330287{col 28}{space 2} 20.21804{col 39}{space 1}   -0.04{col 48}{space 3}0.967{col 56}{space 4}-40.46161{col 69}{space 3} 38.79555
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} 25.82886{col 28}{space 2} 22.12188{col 39}{space 1}    1.17{col 48}{space 3}0.243{col 56}{space 4}-17.53135{col 69}{space 3} 69.18906
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 11.44857{col 28}{space 2} 19.82759{col 39}{space 1}    0.58{col 48}{space 3}0.564{col 56}{space 4}-27.41469{col 69}{space 3} 50.31183
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2} -2.89402{col 28}{space 2} .2023087{col 39}{space 1}  -14.30{col 48}{space 3}0.000{col 56}{space 4}-3.290557{col 69}{space 3}-2.497483
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 1.654558{col 28}{space 2} .6632001{col 39}{space 1}    2.49{col 48}{space 3}0.013{col 56}{space 4} .3546461{col 69}{space 3}  2.95447
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 3.997237{col 28}{space 2} .2111655{col 39}{space 1}   18.93{col 48}{space 3}0.000{col 56}{space 4}  3.58334{col 69}{space 3} 4.411134
+{txt}{space 5}resid1_rb {c |}{col 16}{res}{space 2}        1{col 28}{space 2}  .020798{col 39}{space 1}   48.08{col 48}{space 3}0.000{col 56}{space 4} .9592347{col 69}{space 3} 1.040765
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 15.24168{col 28}{space 2} 3.191155{col 39}{space 1}    4.78{col 48}{space 3}0.000{col 56}{space 4} 8.986821{col 69}{space 3} 21.49653
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+.         // Run F-Test:
+.         test noisy_x_vol L.noisy_x_vol L2.noisy_x_vol L3.noisy_x_vol
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}noisy_x_vol = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} L.noisy_x_vol = 0{p_end}
+{p 0 7}{space 1}{text:( 3)}{space 1} L2.noisy_x_vol = 0{p_end}
+{p 0 7}{space 1}{text:( 4)}{space 1} L3.noisy_x_vol = 0{p_end}
+
+{txt}       F(  4, 24693) ={res}    3.38
+{txt}{col 13}Prob > F ={res}    0.0089
+{txt}
+{com}. 
+. // High-Low Range:
+.         // Generate interaction terms:
+.         qui gen noisy_x_logrange = noisy * loghl_1w
+{txt}
+{com}.         qui xtreg interest_index L(1/2).interest_index L(0/2).loghl_1w ///
+>                 L(0/2).noisy_x_logrange logmarketcap1w spread1w logturnover1w, fe
+{txt}
+{com}.         qui predict resid2_rb, u
+{txt}
+{com}.         newey interest_index L(1/2).interest_index L(0/2).loghl_1w ///
+>                 L(0/2).noisy_x_logrange logmarketcap1w spread1w logturnover1w ///
+>                 resid2_rb, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,795
+{txt}Maximum lag = {res}5{col 49}{txt}F( 12,     24782){col 67}= {res}   2165.21
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 17}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 18}{c |}{col 30}  Newey–West
+{col 1}  interest_index{col 18}{c |} Coefficient{col 30}  std. err.{col 42}      t{col 50}   P>|t|{col 58}     [95% con{col 71}f. interval]
+{hline 17}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}interest_index {c |}
+{space 13}L1. {c |}{col 18}{res}{space 2} .2155885{col 30}{space 2}  .007475{col 41}{space 1}   28.84{col 50}{space 3}0.000{col 58}{space 4} .2009371{col 71}{space 3} .2302399
+{txt}{space 13}L2. {c |}{col 18}{res}{space 2} .1776904{col 30}{space 2} .0076726{col 41}{space 1}   23.16{col 50}{space 3}0.000{col 58}{space 4} .1626516{col 71}{space 3} .1927292
+{txt}{space 16} {c |}
+{space 8}loghl_1w {c |}
+{space 13}--. {c |}{col 18}{res}{space 2} 107.6272{col 30}{space 2} 28.16688{col 41}{space 1}    3.82{col 50}{space 3}0.000{col 58}{space 4} 52.41846{col 71}{space 3}  162.836
+{txt}{space 13}L1. {c |}{col 18}{res}{space 2}-28.45902{col 30}{space 2} 16.26434{col 41}{space 1}   -1.75{col 50}{space 3}0.080{col 58}{space 4} -60.3381{col 71}{space 3} 3.420056
+{txt}{space 13}L2. {c |}{col 18}{res}{space 2}-36.12175{col 30}{space 2} 18.44852{col 41}{space 1}   -1.96{col 50}{space 3}0.050{col 58}{space 4}-72.28195{col 71}{space 3} .0384479
+{txt}{space 16} {c |}
+noisy_x_logrange {c |}
+{space 13}--. {c |}{col 18}{res}{space 2} 15.79506{col 30}{space 2} 31.47733{col 41}{space 1}    0.50{col 50}{space 3}0.616{col 58}{space 4}-45.90238{col 71}{space 3}  77.4925
+{txt}{space 13}L1. {c |}{col 18}{res}{space 2}-3.543504{col 30}{space 2} 26.26983{col 41}{space 1}   -0.13{col 50}{space 3}0.893{col 58}{space 4}-55.03394{col 71}{space 3} 47.94693
+{txt}{space 13}L2. {c |}{col 18}{res}{space 2}  45.4765{col 30}{space 2} 26.79187{col 41}{space 1}    1.70{col 50}{space 3}0.090{col 58}{space 4}-7.037167{col 71}{space 3} 97.99016
+{txt}{space 16} {c |}
+{space 2}logmarketcap1w {c |}{col 18}{res}{space 2}-3.156491{col 30}{space 2} .2117513{col 41}{space 1}  -14.91{col 50}{space 3}0.000{col 58}{space 4}-3.571536{col 71}{space 3}-2.741446
+{txt}{space 8}spread1w {c |}{col 18}{res}{space 2} 1.609339{col 30}{space 2} .6649321{col 41}{space 1}    2.42{col 50}{space 3}0.016{col 58}{space 4}  .306032{col 71}{space 3} 2.912645
+{txt}{space 3}logturnover1w {c |}{col 18}{res}{space 2} 4.349062{col 30}{space 2} .2222527{col 41}{space 1}   19.57{col 50}{space 3}0.000{col 58}{space 4} 3.913434{col 71}{space 3} 4.784691
+{txt}{space 7}resid2_rb {c |}{col 18}{res}{space 2}        1{col 30}{space 2} .0207323{col 41}{space 1}   48.23{col 50}{space 3}0.000{col 58}{space 4} .9593634{col 71}{space 3} 1.040637
+{txt}{space 11}_cons {c |}{col 18}{res}{space 2} 15.51029{col 30}{space 2} 3.255502{col 41}{space 1}    4.76{col 50}{space 3}0.000{col 58}{space 4} 9.129312{col 71}{space 3} 21.89127
+{txt}{hline 17}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+.         // Run F-Test:  
+.         test noisy_x_logrange L.noisy_x_logrange L2.noisy_x_logrange
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}noisy_x_logrange = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} L.noisy_x_logrange = 0{p_end}
+{p 0 7}{space 1}{text:( 3)}{space 1} L2.noisy_x_logrange = 0{p_end}
+
+{txt}       F(  3, 24782) ={res}   11.66
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}. 
+. // Relative spread:
+.         // Generate interaction terms:
+.         qui gen noisy_x_relspread = noisy * relspread1w
+{txt}
+{com}.         qui xtreg interest_index L(1/2).interest_index L(0/3).relspread1w ///
+>                 L(0/3).noisy_x_relspread logmarketcap1w logturnover1w, fe
+{txt}
+{com}.         qui predict resid3_rb, u
+{txt}
+{com}.         newey interest_index L(1/2).interest_index L(0/3).relspread1w ///
+>                 L(0/3).noisy_x_relspread logmarketcap1w logturnover1w resid3_rb, ///
+>                 lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,708
+{txt}Maximum lag = {res}5{col 49}{txt}F( 13,     24694){col 67}= {res}   1946.83
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 18}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 19}{c |}{col 31}  Newey–West
+{col 1}   interest_index{col 19}{c |} Coefficient{col 31}  std. err.{col 43}      t{col 51}   P>|t|{col 59}     [95% con{col 72}f. interval]
+{hline 18}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 3}interest_index {c |}
+{space 14}L1. {c |}{col 19}{res}{space 2} .2148431{col 31}{space 2} .0074516{col 42}{space 1}   28.83{col 51}{space 3}0.000{col 59}{space 4} .2002376{col 72}{space 3} .2294486
+{txt}{space 14}L2. {c |}{col 19}{res}{space 2} .1778962{col 31}{space 2} .0076065{col 42}{space 1}   23.39{col 51}{space 3}0.000{col 59}{space 4} .1629869{col 72}{space 3} .1928054
+{txt}{space 17} {c |}
+{space 6}relspread1w {c |}
+{space 14}--. {c |}{col 19}{res}{space 2}-290.5788{col 31}{space 2} 245.4394{col 42}{space 1}   -1.18{col 51}{space 3}0.236{col 59}{space 4}-771.6547{col 72}{space 3} 190.4971
+{txt}{space 14}L1. {c |}{col 19}{res}{space 2}-218.5826{col 31}{space 2} 200.6636{col 42}{space 1}   -1.09{col 51}{space 3}0.276{col 59}{space 4}-611.8953{col 72}{space 3} 174.7301
+{txt}{space 14}L2. {c |}{col 19}{res}{space 2}-388.6098{col 31}{space 2} 191.7365{col 42}{space 1}   -2.03{col 51}{space 3}0.043{col 59}{space 4}-764.4249{col 72}{space 3}-12.79463
+{txt}{space 14}L3. {c |}{col 19}{res}{space 2}-45.22592{col 31}{space 2} 279.3873{col 42}{space 1}   -0.16{col 51}{space 3}0.871{col 59}{space 4}-592.8418{col 72}{space 3} 502.3899
+{txt}{space 17} {c |}
+noisy_x_relspread {c |}
+{space 14}--. {c |}{col 19}{res}{space 2} 47.23682{col 31}{space 2} 698.0509{col 42}{space 1}    0.07{col 51}{space 3}0.946{col 59}{space 4}-1320.985{col 72}{space 3} 1415.459
+{txt}{space 14}L1. {c |}{col 19}{res}{space 2} -608.315{col 31}{space 2}  758.621{col 42}{space 1}   -0.80{col 51}{space 3}0.423{col 59}{space 4}-2095.258{col 72}{space 3} 878.6277
+{txt}{space 14}L2. {c |}{col 19}{res}{space 2} 409.8175{col 31}{space 2} 749.5927{col 42}{space 1}    0.55{col 51}{space 3}0.585{col 59}{space 4}-1059.429{col 72}{space 3} 1879.064
+{txt}{space 14}L3. {c |}{col 19}{res}{space 2} 390.6142{col 31}{space 2} 814.7634{col 42}{space 1}    0.48{col 51}{space 3}0.632{col 59}{space 4}-1206.371{col 72}{space 3} 1987.599
+{txt}{space 17} {c |}
+{space 3}logmarketcap1w {c |}{col 19}{res}{space 2}-4.751587{col 31}{space 2} .2134209{col 42}{space 1}  -22.26{col 51}{space 3}0.000{col 59}{space 4}-5.169905{col 72}{space 3}-4.333269
+{txt}{space 4}logturnover1w {c |}{col 19}{res}{space 2} 5.441963{col 31}{space 2} .1964146{col 42}{space 1}   27.71{col 51}{space 3}0.000{col 59}{space 4} 5.056979{col 72}{space 3} 5.826948
+{txt}{space 8}resid3_rb {c |}{col 19}{res}{space 2}        1{col 31}{space 2} .0200945{col 42}{space 1}   49.76{col 51}{space 3}0.000{col 59}{space 4} .9606136{col 72}{space 3} 1.039386
+{txt}{space 12}_cons {c |}{col 19}{res}{space 2} 35.93546{col 31}{space 2} 3.836237{col 42}{space 1}    9.37{col 51}{space 3}0.000{col 59}{space 4} 28.41621{col 72}{space 3} 43.45472
+{txt}{hline 18}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+.         // Run F-Test:  
+.         test noisy_x_relspread L.noisy_x_relspread L2.noisy_x_relspread ///
+>                 L3.noisy_x_relspread
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}noisy_x_relspread = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} L.noisy_x_relspread = 0{p_end}
+{p 0 7}{space 1}{text:( 3)}{space 1} L2.noisy_x_relspread = 0{p_end}
+{p 0 7}{space 1}{text:( 4)}{space 1} L3.noisy_x_relspread = 0{p_end}
+
+{txt}       F(  4, 24694) ={res}    0.33
+{txt}{col 13}Prob > F ={res}    0.8610
+{txt}
+{com}. 
+. // Illiquidity level:
+.         // Generate interaction terms:
+.         qui gen noisy_x_illiq = noisy * log_illiq_1w
+{txt}
+{com}.         qui xtreg interest_index L(1/2).interest_index L(0/4).log_illiq_1w ///
+>                 L(0/4).noisy_x_illiq logmarketcap1w logturnover1w, fe 
+{txt}
+{com}.         qui predict resid4_rb, u
+{txt}
+{com}.         newey interest_index L(1/2).interest_index L(0/4).log_illiq_1w ///
+>                 L(0/4).noisy_x_illiq logmarketcap1w logturnover1w resid4_rb, ///
+>                 lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,621
+{txt}Maximum lag = {res}5{col 49}{txt}F( 15,     24605){col 67}= {res}   1681.84
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2132685{col 28}{space 2} .0074261{col 39}{space 1}   28.72{col 48}{space 3}0.000{col 56}{space 4} .1987129{col 69}{space 3} .2278242
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1774293{col 28}{space 2} .0076125{col 39}{space 1}   23.31{col 48}{space 3}0.000{col 56}{space 4} .1625083{col 69}{space 3} .1923502
+{txt}{space 14} {c |}
+{space 2}log_illiq_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} .8071695{col 28}{space 2} .2796415{col 39}{space 1}    2.89{col 48}{space 3}0.004{col 56}{space 4} .2590553{col 69}{space 3} 1.355284
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} .1792454{col 28}{space 2} .2696297{col 39}{space 1}    0.66{col 48}{space 3}0.506{col 56}{space 4}-.3492451{col 69}{space 3} .7077359
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .4637242{col 28}{space 2} .2772318{col 39}{space 1}    1.67{col 48}{space 3}0.094{col 56}{space 4}-.0796669{col 69}{space 3} 1.007115
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} .6521163{col 28}{space 2} .2811558{col 39}{space 1}    2.32{col 48}{space 3}0.020{col 56}{space 4} .1010338{col 69}{space 3} 1.203199
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} .4398186{col 28}{space 2} .2701571{col 39}{space 1}    1.63{col 48}{space 3}0.104{col 56}{space 4}-.0897056{col 69}{space 3} .9693429
+{txt}{space 14} {c |}
+{space 1}noisy_x_illiq {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} .5174794{col 28}{space 2} .4214123{col 39}{space 1}    1.23{col 48}{space 3}0.219{col 56}{space 4}-.3085142{col 69}{space 3} 1.343473
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} .0713487{col 28}{space 2} .4427498{col 39}{space 1}    0.16{col 48}{space 3}0.872{col 56}{space 4}-.7964677{col 69}{space 3}  .939165
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-.0711586{col 28}{space 2} .4523139{col 39}{space 1}   -0.16{col 48}{space 3}0.875{col 56}{space 4}-.9577212{col 69}{space 3} .8154041
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-.0126247{col 28}{space 2} .4343679{col 39}{space 1}   -0.03{col 48}{space 3}0.977{col 56}{space 4} -.864012{col 69}{space 3} .8387626
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} .2267916{col 28}{space 2} .4170848{col 39}{space 1}    0.54{col 48}{space 3}0.587{col 56}{space 4}-.5907197{col 69}{space 3} 1.044303
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2}  -2.9988{col 28}{space 2} .1902013{col 39}{space 1}  -15.77{col 48}{space 3}0.000{col 56}{space 4}-3.371606{col 69}{space 3}-2.625994
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 6.733994{col 28}{space 2} .2863628{col 39}{space 1}   23.52{col 48}{space 3}0.000{col 56}{space 4} 6.172705{col 69}{space 3} 7.295282
+{txt}{space 5}resid4_rb {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0208446{col 39}{space 1}   47.97{col 48}{space 3}0.000{col 56}{space 4} .9591433{col 69}{space 3} 1.040857
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 35.46355{col 28}{space 2} 3.328422{col 39}{space 1}   10.65{col 48}{space 3}0.000{col 56}{space 4} 28.93964{col 69}{space 3} 41.98745
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+.         // Run F-Test:
+.         test noisy_x_illiq L.noisy_x_illiq L2.noisy_x_illiq L3.noisy_x_illiq ///
+>                 L4.noisy_x_illiq
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}noisy_x_illiq = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} L.noisy_x_illiq = 0{p_end}
+{p 0 7}{space 1}{text:( 3)}{space 1} L2.noisy_x_illiq = 0{p_end}
+{p 0 7}{space 1}{text:( 4)}{space 1} L3.noisy_x_illiq = 0{p_end}
+{p 0 7}{space 1}{text:( 5)}{space 1} L4.noisy_x_illiq = 0{p_end}
+
+{txt}       F(  5, 24605) ={res}  327.23
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}. 
+. // 1-Day Returns:
+.         // Generate interaction terms:
+.         qui gen noisy_x_ret1d = noisy * ret1d_1w
+{txt}
+{com}.         qui xtreg interest_index L(1/2).interest_index L(0/2).ret1d_1w ///
+>                 L(0/2).noisy_x_ret1d logmarketcap1w spread1w logturnover1w, fe
+{txt}
+{com}.         qui predict resid5_rb, u
+{txt}
+{com}.         newey interest_index L(1/2).interest_index L(0/2).ret1d_1w ///
+>                 L(0/2).noisy_x_ret1d logmarketcap1w spread1w logturnover1w ///
+>                 resid5_rb, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,795
+{txt}Maximum lag = {res}5{col 49}{txt}F( 12,     24782){col 67}= {res}   2124.22
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2149783{col 28}{space 2} .0074343{col 39}{space 1}   28.92{col 48}{space 3}0.000{col 56}{space 4} .2004066{col 69}{space 3} .2295499
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1764068{col 28}{space 2} .0075998{col 39}{space 1}   23.21{col 48}{space 3}0.000{col 56}{space 4} .1615107{col 69}{space 3} .1913028
+{txt}{space 14} {c |}
+{space 6}ret1d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 29.06001{col 28}{space 2}  18.3016{col 39}{space 1}    1.59{col 48}{space 3}0.112{col 56}{space 4}-6.812228{col 69}{space 3} 64.93225
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 24.71522{col 28}{space 2} 16.70073{col 39}{space 1}    1.48{col 48}{space 3}0.139{col 56}{space 4}-8.019213{col 69}{space 3} 57.44965
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  27.7691{col 28}{space 2} 15.46853{col 39}{space 1}    1.80{col 48}{space 3}0.073{col 56}{space 4}-2.550152{col 69}{space 3} 58.08834
+{txt}{space 14} {c |}
+{space 1}noisy_x_ret1d {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 57.29888{col 28}{space 2} 27.46722{col 39}{space 1}    2.09{col 48}{space 3}0.037{col 56}{space 4} 3.461501{col 69}{space 3} 111.1363
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-7.716464{col 28}{space 2} 24.97269{col 39}{space 1}   -0.31{col 48}{space 3}0.757{col 56}{space 4}-56.66442{col 69}{space 3}  41.2315
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}-14.65807{col 28}{space 2} 23.98243{col 39}{space 1}   -0.61{col 48}{space 3}0.541{col 56}{space 4}-61.66507{col 69}{space 3} 32.34893
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2} -4.62784{col 28}{space 2} .2187265{col 39}{space 1}  -21.16{col 48}{space 3}0.000{col 56}{space 4}-5.056557{col 69}{space 3}-4.199123
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 1.882275{col 28}{space 2} .6697475{col 39}{space 1}    2.81{col 48}{space 3}0.005{col 56}{space 4}   .56953{col 69}{space 3}  3.19502
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 5.493166{col 28}{space 2} .2311548{col 39}{space 1}   23.76{col 48}{space 3}0.000{col 56}{space 4} 5.040089{col 69}{space 3} 5.946244
+{txt}{space 5}resid5_rb {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0202479{col 39}{space 1}   49.39{col 48}{space 3}0.000{col 56}{space 4}  .960313{col 69}{space 3} 1.039687
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 31.63226{col 28}{space 2} 3.296197{col 39}{space 1}    9.60{col 48}{space 3}0.000{col 56}{space 4} 25.17152{col 69}{space 3} 38.09301
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+.         // Run F-Test:
+.         test noisy_x_ret1d L.noisy_x_ret1d L2.noisy_x_ret1d
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}noisy_x_ret1d = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} L.noisy_x_ret1d = 0{p_end}
+{p 0 7}{space 1}{text:( 3)}{space 1} L2.noisy_x_ret1d = 0{p_end}
+
+{txt}       F(  3, 24782) ={res}    1.74
+{txt}{col 13}Prob > F ={res}    0.1567
+{txt}
+{com}. 
+. // 5-Day Returns:
+.         // Generate interaction terms:
+.         qui gen noisy_x_ret5d = noisy * ret5d_1w
+{txt}
+{com}.         qui xtreg interest_index L(1/2).interest_index L(0/4).ret5d_1w ///
+>                 L(0/4).noisy_x_ret5d logmarketcap1w spread1w logturnover1w, fe
+{txt}
+{com}.         qui predict resid6_rb, u
+{txt}
+{com}.         newey interest_index L(1/2).interest_index L(0/4).ret5d_1w ///
+>                 L(0/4).noisy_x_ret5d logmarketcap1w spread1w logturnover1w ///
+>                 resid6_rb, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,534
+{txt}Maximum lag = {res}5{col 49}{txt}F( 16,     24517){col 67}= {res}   1587.18
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 16}{c |}{col 28}  Newey–West
+{col 1}interest_index{col 16}{c |} Coefficient{col 28}  std. err.{col 40}      t{col 48}   P>|t|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+interest_index {c |}
+{space 11}L1. {c |}{col 16}{res}{space 2} .2163925{col 28}{space 2} .0075023{col 39}{space 1}   28.84{col 48}{space 3}0.000{col 56}{space 4} .2016876{col 69}{space 3} .2310974
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .1768391{col 28}{space 2} .0076455{col 39}{space 1}   23.13{col 48}{space 3}0.000{col 56}{space 4} .1618534{col 69}{space 3} .1918248
+{txt}{space 14} {c |}
+{space 6}ret5d_1w {c |}
+{space 11}--. {c |}{col 16}{res}{space 2}  11.7396{col 28}{space 2} 5.027589{col 39}{space 1}    2.34{col 48}{space 3}0.020{col 56}{space 4} 1.885219{col 69}{space 3} 21.59398
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2} 2.683176{col 28}{space 2} 3.918405{col 39}{space 1}    0.68{col 48}{space 3}0.494{col 56}{space 4}-4.997136{col 69}{space 3} 10.36349
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2}  6.42626{col 28}{space 2} 3.977726{col 39}{space 1}    1.62{col 48}{space 3}0.106{col 56}{space 4}-1.370325{col 69}{space 3} 14.22285
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2}-3.316348{col 28}{space 2} 4.116581{col 39}{space 1}   -0.81{col 48}{space 3}0.420{col 56}{space 4} -11.3851{col 69}{space 3}   4.7524
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} 1.209546{col 28}{space 2} 3.970804{col 39}{space 1}    0.30{col 48}{space 3}0.761{col 56}{space 4}-6.573471{col 69}{space 3} 8.992563
+{txt}{space 14} {c |}
+{space 1}noisy_x_ret5d {c |}
+{space 11}--. {c |}{col 16}{res}{space 2} 13.65942{col 28}{space 2} 7.383814{col 39}{space 1}    1.85{col 48}{space 3}0.064{col 56}{space 4}-.8132995{col 69}{space 3} 28.13215
+{txt}{space 11}L1. {c |}{col 16}{res}{space 2}-6.916505{col 28}{space 2} 6.273405{col 39}{space 1}   -1.10{col 48}{space 3}0.270{col 56}{space 4}-19.21276{col 69}{space 3} 5.379749
+{txt}{space 11}L2. {c |}{col 16}{res}{space 2} .2205599{col 28}{space 2} 6.331718{col 39}{space 1}    0.03{col 48}{space 3}0.972{col 56}{space 4}-12.18999{col 69}{space 3} 12.63111
+{txt}{space 11}L3. {c |}{col 16}{res}{space 2} 12.08894{col 28}{space 2} 6.473559{col 39}{space 1}    1.87{col 48}{space 3}0.062{col 56}{space 4}-.5996277{col 69}{space 3} 24.77751
+{txt}{space 11}L4. {c |}{col 16}{res}{space 2} 3.274366{col 28}{space 2} 6.196311{col 39}{space 1}    0.53{col 48}{space 3}0.597{col 56}{space 4} -8.87078{col 69}{space 3} 15.41951
+{txt}{space 14} {c |}
+logmarketcap1w {c |}{col 16}{res}{space 2}-4.813606{col 28}{space 2} .2215895{col 39}{space 1}  -21.72{col 48}{space 3}0.000{col 56}{space 4}-5.247935{col 69}{space 3}-4.379278
+{txt}{space 6}spread1w {c |}{col 16}{res}{space 2} 1.963037{col 28}{space 2}  .669448{col 39}{space 1}    2.93{col 48}{space 3}0.003{col 56}{space 4}  .650878{col 69}{space 3} 3.275196
+{txt}{space 1}logturnover1w {c |}{col 16}{res}{space 2} 5.590222{col 28}{space 2} .2334389{col 39}{space 1}   23.95{col 48}{space 3}0.000{col 56}{space 4} 5.132667{col 69}{space 3} 6.047776
+{txt}{space 5}resid6_rb {c |}{col 16}{res}{space 2}        1{col 28}{space 2} .0203895{col 39}{space 1}   49.04{col 48}{space 3}0.000{col 56}{space 4} .9600353{col 69}{space 3} 1.039965
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 34.18897{col 28}{space 2} 3.319742{col 39}{space 1}   10.30{col 48}{space 3}0.000{col 56}{space 4} 27.68207{col 69}{space 3} 40.69586
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+.         // Run F-Test:
+.         test noisy_x_ret5d L.noisy_x_ret5d L2.noisy_x_ret5d L3.noisy_x_ret5d ///
+>                 L4.noisy_x_ret5d
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}noisy_x_ret5d = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} L.noisy_x_ret5d = 0{p_end}
+{p 0 7}{space 1}{text:( 3)}{space 1} L2.noisy_x_ret5d = 0{p_end}
+{p 0 7}{space 1}{text:( 4)}{space 1} L3.noisy_x_ret5d = 0{p_end}
+{p 0 7}{space 1}{text:( 5)}{space 1} L4.noisy_x_ret5d = 0{p_end}
+
+{txt}       F(  5, 24517) ={res}    1.64
+{txt}{col 13}Prob > F ={res}    0.1460
+{txt}
+{com}. 
+. // Volume:
+.         // Generate interaction terms:
+.         qui gen noisy_x_logvolume = noisy * logvolume1w
+{txt}
+{com}.         qui xtreg interest_index L(1/2).interest_index L(0/3).logvolume1w ///
+>                 L(0/3).noisy_x_logvolume logmarketcap1w spread1w logturnover1w, fe
+{txt}
+{com}.         qui predict resid7_rb, u
+{txt}
+{com}.         newey interest_index L(1/2).interest_index L(0/3).logvolume1w ///
+>                 L(0/3).noisy_x_logvolume logmarketcap1w spread1w logturnover1w ///
+>                 resid7_rb, lag(5) force
+
+{txt}Regression with Newey–West standard errors{col 49}Number of obs{col 67}= {res}    24,708
+{txt}Maximum lag = {res}5{col 49}{txt}F( 14,     24693){col 67}= {res}   1827.61
+{col 49}{txt}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 18}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 19}{c |}{col 31}  Newey–West
+{col 1}   interest_index{col 19}{c |} Coefficient{col 31}  std. err.{col 43}      t{col 51}   P>|t|{col 59}     [95% con{col 72}f. interval]
+{hline 18}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 3}interest_index {c |}
+{space 14}L1. {c |}{col 19}{res}{space 2} .2096883{col 31}{space 2} .0075161{col 42}{space 1}   27.90{col 51}{space 3}0.000{col 59}{space 4} .1949564{col 72}{space 3} .2244203
+{txt}{space 14}L2. {c |}{col 19}{res}{space 2}  .177088{col 31}{space 2} .0077619{col 42}{space 1}   22.82{col 51}{space 3}0.000{col 59}{space 4} .1618743{col 72}{space 3} .1923018
+{txt}{space 17} {c |}
+{space 6}logvolume1w {c |}
+{space 14}--. {c |}{col 19}{res}{space 2} 8.158188{col 31}{space 2} .5287495{col 42}{space 1}   15.43{col 51}{space 3}0.000{col 59}{space 4} 7.121807{col 72}{space 3} 9.194569
+{txt}{space 14}L1. {c |}{col 19}{res}{space 2} .5335292{col 31}{space 2} .5388513{col 42}{space 1}    0.99{col 51}{space 3}0.322{col 59}{space 4}-.5226517{col 72}{space 3}  1.58971
+{txt}{space 14}L2. {c |}{col 19}{res}{space 2}-1.929995{col 31}{space 2} .5344493{col 42}{space 1}   -3.61{col 51}{space 3}0.000{col 59}{space 4}-2.977548{col 72}{space 3}-.8824421
+{txt}{space 14}L3. {c |}{col 19}{res}{space 2}-.6203884{col 31}{space 2} .4690624{col 42}{space 1}   -1.32{col 51}{space 3}0.186{col 59}{space 4}-1.539779{col 72}{space 3}  .299002
+{txt}{space 17} {c |}
+noisy_x_logvolume {c |}
+{space 14}--. {c |}{col 19}{res}{space 2}-.3679558{col 31}{space 2} .7992946{col 42}{space 1}   -0.46{col 51}{space 3}0.645{col 59}{space 4}-1.934621{col 72}{space 3}  1.19871
+{txt}{space 14}L1. {c |}{col 19}{res}{space 2}-.2085005{col 31}{space 2} .8573627{col 42}{space 1}   -0.24{col 51}{space 3}0.808{col 59}{space 4}-1.888983{col 72}{space 3} 1.471982
+{txt}{space 14}L2. {c |}{col 19}{res}{space 2} .9500917{col 31}{space 2} .8741445{col 42}{space 1}    1.09{col 51}{space 3}0.277{col 59}{space 4} -.763284{col 72}{space 3} 2.663467
+{txt}{space 14}L3. {c |}{col 19}{res}{space 2} 1.054775{col 31}{space 2} .7394121{col 42}{space 1}    1.43{col 51}{space 3}0.154{col 59}{space 4}-.3945177{col 72}{space 3} 2.504067
+{txt}{space 17} {c |}
+{space 3}logmarketcap1w {c |}{col 19}{res}{space 2}-.0084917{col 31}{space 2} .1906716{col 42}{space 1}   -0.04{col 51}{space 3}0.964{col 59}{space 4}-.3822195{col 72}{space 3} .3652361
+{txt}{space 9}spread1w {c |}{col 19}{res}{space 2} 1.747713{col 31}{space 2} .7129698{col 42}{space 1}    2.45{col 51}{space 3}0.014{col 59}{space 4} .3502495{col 72}{space 3} 3.145177
+{txt}{space 4}logturnover1w {c |}{col 19}{res}{space 2}-.8223763{col 31}{space 2} .2153433{col 42}{space 1}   -3.82{col 51}{space 3}0.000{col 59}{space 4}-1.244462{col 72}{space 3}-.4002905
+{txt}{space 8}resid7_rb {c |}{col 19}{res}{space 2}        1{col 31}{space 2} .0211763{col 42}{space 1}   47.22{col 51}{space 3}0.000{col 59}{space 4} .9584931{col 72}{space 3} 1.041507
+{txt}{space 12}_cons {c |}{col 19}{res}{space 2}-66.93811{col 31}{space 2} 3.193168{col 42}{space 1}  -20.96{col 51}{space 3}0.000{col 59}{space 4}-73.19691{col 72}{space 3}-60.67931
+{txt}{hline 18}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+.         // Run F-Test:
+.         test noisy_x_logvolume L.noisy_x_logvolume L2.noisy_x_logvolume ///
+>                 L3.noisy_x_logvolume
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}noisy_x_logvolume = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} L.noisy_x_logvolume = 0{p_end}
+{p 0 7}{space 1}{text:( 3)}{space 1} L2.noisy_x_logvolume = 0{p_end}
+{p 0 7}{space 1}{text:( 4)}{space 1} L3.noisy_x_logvolume = 0{p_end}
+
+{txt}       F(  4, 24693) ={res}  371.70
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}. 
+.         
+. // Close log:
+. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}/Users/jamessymons-hicks/Library/CloudStorage/OneDrive-LondonSchoolofEconomics/GitHub_Repositories/Market-Dynamics-Attention/LogFiles/ET_All_Models_Output.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res} 2 Jan 2025, 16:22:19
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
